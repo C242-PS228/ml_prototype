@@ -5,12 +5,12 @@ from transformers import AutoTokenizer
 from tensorflow.keras.models import load_model
 from utils import emoji_dict, stop_words
 from nltk.tokenize import RegexpTokenizer
+import io
 
-# Load tokenizer and model
 tokenizer = AutoTokenizer.from_pretrained("tokenizer")
 model = load_model("model/bert_attention.h5")
 
-# Helper functions for text preprocessing
+# PREPROCESSING
 def replace_emoji_with_word(text):
     for emoji, word in emoji_dict.items():
         text = re.sub(f'({emoji})+', f' {word} ', text)
@@ -36,19 +36,37 @@ def tokenize_batch(texts):
         texts, padding="max_length", truncation=True, max_length=128, return_tensors="tf"
     )['input_ids']
 
+# PREDICT
 def predict_sentiment_batch(texts):
-    # Preprocess all texts at once
     preprocessed_texts = [preprocess_text(text) for text in texts]
-    # Tokenize all texts as a batch
     tokenized_texts = tokenize_batch(preprocessed_texts)
-    # Predict sentiment for the entire batch
     predictions = model.predict(tokenized_texts)
-    sentiment_labels = ["Negative", "Neutral", "Positive"]
-    # Map predictions to sentiment labels
+    sentiment_labels = ["Negatif", "Netral", "Positif"]
     sentiments = [sentiment_labels[pred.argmax()] for pred in predictions]
     return sentiments
 
-# Gradio interface
+# OUTPUT
+def summarize_sentiments(sentiments):
+    summary = pd.Series(sentiments).value_counts().to_dict()
+    return {
+        "Positif": summary.get("Positif", 0),
+        "Netral": summary.get("Netral", 0),
+        "Negatif": summary.get("Negatif", 0),
+    }
+
+def create_csv_file(texts, sentiments):
+    df = pd.DataFrame({"Input Text": texts, "Predicted Sentiment": sentiments})
+    csv_path = "sentiment_results.csv"
+    df.to_csv(csv_path, index=False)
+    return csv_path
+
+def create_excel_file(texts, sentiments):
+    df = pd.DataFrame({"Input Text": texts, "Predicted Sentiment": sentiments})
+    excel_path = "sentiment_results.xlsx"
+    df.to_excel(excel_path, index=False)
+    return excel_path
+
+# GRADIO UI
 with gr.Blocks() as sentiment_app:
     gr.Markdown("# Sentiment Classification App (Batch Mode)")
     with gr.Row():
@@ -57,14 +75,27 @@ with gr.Blocks() as sentiment_app:
             submit_btn = gr.Button("Classify Sentiments")
         with gr.Column():
             output_labels = gr.Dataframe(headers=["Input Text", "Predicted Sentiment"], interactive=False)
+            summary_label = gr.Label(label="Summary of Sentiments")
+            download_csv = gr.File(label="Download CSV")
+            download_excel = gr.File(label="Download Excel")
 
-    # Click event for batch prediction
     def process_texts(texts):
-        texts_list = texts.split("\n")  # Split the textarea input into individual lines
-        sentiments = predict_sentiment_batch(texts_list)  # Predict all at once
-        return pd.DataFrame({"Input Text": texts_list, "Predicted Sentiment": sentiments})
-    
-    submit_btn.click(fn=process_texts, inputs=input_texts, outputs=output_labels)
+        texts_list = texts.split("\n")  
+        sentiments = predict_sentiment_batch(texts_list)  
+        summary = summarize_sentiments(sentiments)  
+        summary_text = (
+            f"Positif: {summary['Positif']} | "
+            f"Netral: {summary['Netral']} | "
+            f"Negatif: {summary['Negatif']}"
+        )
+        csv_path = create_csv_file(texts_list, sentiments)  
+        excel_path = create_excel_file(texts_list, sentiments)  
+        return pd.DataFrame({"Input Text": texts_list, "Predicted Sentiment": sentiments}), summary_text, csv_path, excel_path
 
-# Launch the app
-sentiment_app.launch()
+    submit_btn.click(
+        fn=process_texts,
+        inputs=input_texts,
+        outputs=[output_labels, summary_label, download_csv, download_excel],
+    )
+
+sentiment_app.launch(share=True)
