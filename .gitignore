@@ -1,3 +1,4 @@
 model/bert_attention.h5
 sentiment_results.csv
 sentiment_results.xlsx
+model

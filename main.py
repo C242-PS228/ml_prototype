@@ -8,7 +8,7 @@ from nltk.tokenize import RegexpTokenizer
 import io
 
 tokenizer = AutoTokenizer.from_pretrained("tokenizer")
-model = load_model("model/bert_attention.h5")
+model = load_model("model/bert_attention_v4.h5")
 
 # PREPROCESSING
 def replace_emoji_with_word(text):
