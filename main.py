@@ -8,7 +8,7 @@ from nltk.tokenize import RegexpTokenizer
 import io
 
 tokenizer = AutoTokenizer.from_pretrained("tokenizer")
-model = load_model("model/bert_attention_v4.h5")
+model = load_model("model/bert_attention_v5.h5")
 
 # PREPROCESSING
 def replace_emoji_with_word(text):
@@ -74,7 +74,7 @@ with gr.Blocks() as sentiment_app:
             input_texts = gr.TextArea(label="Enter Texts (One per Line)", placeholder="Enter multiple texts, each on a new line.")
             submit_btn = gr.Button("Classify Sentiments")
         with gr.Column():
-            output_labels = gr.Dataframe(headers=["Input Text", "Predicted Sentiment"], interactive=False)
+            output_labels = gr.Dataframe(headers=["Predicted Sentiment", "Input Text"], interactive=False)
             summary_label = gr.Label(label="Summary of Sentiments")
             download_csv = gr.File(label="Download CSV")
             download_excel = gr.File(label="Download Excel")
@@ -90,7 +90,7 @@ with gr.Blocks() as sentiment_app:
         )
         csv_path = create_csv_file(texts_list, sentiments)  
         excel_path = create_excel_file(texts_list, sentiments)  
-        return pd.DataFrame({"Input Text": texts_list, "Predicted Sentiment": sentiments}), summary_text, csv_path, excel_path
+        return pd.DataFrame({"Predicted Sentiment": sentiments, "Input Text": texts_list}), summary_text, csv_path, excel_path
 
     submit_btn.click(
         fn=process_texts,
