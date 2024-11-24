@@ -3,12 +3,12 @@ import re
 import pandas as pd
 from transformers import AutoTokenizer
 from tensorflow.keras.models import load_model
-from utils import emoji_dict, stop_words
+from utils import emoji_dict, stop_words, get_top_3_negative_comments, get_top_3_positive_comments
 from nltk.tokenize import RegexpTokenizer
 import io
 
 tokenizer = AutoTokenizer.from_pretrained("tokenizer")
-model = load_model("model/bert_attention_v5.h5")
+model = load_model("model/bert_attention_v6.h5")
 
 # PREPROCESSING
 def replace_emoji_with_word(text):
@@ -25,6 +25,7 @@ def stop_words_removal(text):
 def preprocess_text(text):
     text = text.lower()
     text = replace_emoji_with_word(text)
+    text = re.sub(r'@\w+', '', text).strip()
     text = re.sub(r'\d+', '', text)
     text = re.sub(r'[^\w\s]', '', text)
     text = text.strip()
@@ -98,4 +99,6 @@ with gr.Blocks() as sentiment_app:
         outputs=[output_labels, summary_label, download_csv, download_excel],
     )
 
-sentiment_app.launch(share=True)
+if __name__ == "__main__":
+    sentiment_app.launch()
+# sentiment_app.launch(share=False)

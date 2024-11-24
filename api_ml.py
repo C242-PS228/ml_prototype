@@ -35,6 +35,7 @@ def stop_words_removal(text):
 def preprocess_text(text):
     text = text.lower()
     text = replace_emoji_with_word(text)
+    text = re.sub(r'@\w+', '', text).strip()
     text = re.sub(r'\d+', '', text)
     text = re.sub(r'[^\w\s]', '', text)
     text = text.strip()
