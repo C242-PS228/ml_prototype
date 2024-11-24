@@ -1,3 +1,8 @@
 model/bert_attention.h5
 sentiment_results.csv
 sentiment_results.xlsx
+model/bert_attention_v3.h5
+model/bert_attention_adam_v2.h5
+model/bert_attention_adam.h5
+model
+venv
