@@ -229,6 +229,9 @@ nouns = [
     "size", "material", "design", "style", "customer service", "delivery", "battery", "support", "product", "experience", "complaint", "order", "shipping", "response", "issue", 'cs'
 ]
 
+exclude_words = ['gua', 'kak', 'gue', 'sih', 'kasih', 'banget', 'orang', 'bu', 'sumpah', 'gitu', 'bnyak', 'banyak', 'gt', 'gitu', 'duo', 'dua', 'satu', 'min', 'pesen', 'brp', 'berapa','memang', 'mmg', 'udh', 'udah', 'uda', 'niat', 'tp', 'tapi']
+
+
 # Common adjectives across industries
 adjectives = [
     "fresh", "sweet", "spicy", "bland", "cold", 
@@ -327,3 +330,52 @@ def remove_mentions(text):
     return re.sub(r'@\w+', '', text).strip()
 
 # Common nouns across industries
+from collections import Counter
+import stanza
+custom_dir = "./stanza_models"
+nlp = stanza.Pipeline('id', dir=custom_dir)
+
+def analyze_sentiment(preprocessed_texts, class_labels):
+    # preprocessed_texts = [preprocess_text(text) for text in texts]
+    # class_labels = predict_sentiment_batch(preprocessed_texts)
+    
+    pos_counter = Counter()
+    neg_counter = Counter()
+
+    for text, label in zip(preprocessed_texts, class_labels):
+        previous_noun = None
+        doc = nlp(text)
+        
+        for sent in doc.sentences:
+            for word in sent.words:
+                word_text = word.text
+                
+                if word_text in exclude_words:
+                    previous_noun = None
+                    continue
+                
+                if word.upos == "NOUN" or word_text in nouns:
+                    previous_noun = word_text
+                
+                elif (word.upos == "ADJ" or word_text in adjectives) and previous_noun:
+                    phrase = f"{previous_noun} {word_text}"
+                    if label == 2:
+                        pos_counter[phrase] += 1
+                    elif label == 0:
+                        neg_counter[phrase] += 1
+                    previous_noun = None
+
+    pos_common_words = pos_counter.most_common()
+    neg_common_words = neg_counter.most_common()
+    
+    return pos_common_words, neg_common_words
+
+def get_top_3_common_words(pos_common_words, neg_common_words):
+    top_3_pos_words = [word for word, _ in pos_common_words[:3]]
+    top_3_neg_words = [word for word, _ in neg_common_words[:3]]
+    
+    return top_3_pos_words, top_3_neg_words
+
+def analyze_sentiment_top_3(texts, class_labels):
+    pos_common_words, neg_common_words = analyze_sentiment(texts, class_labels)
+    return get_top_3_common_words(pos_common_words, neg_common_words)

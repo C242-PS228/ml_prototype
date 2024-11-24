@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from typing import List
-
+from typing import List, Dict
 from transformers import AutoTokenizer
 from tensorflow.keras.models import load_model
 from utils import (
@@ -9,16 +8,22 @@ from utils import (
     stop_words,
     get_top_3_positive_comments,
     get_top_3_negative_comments,
+    get_top_3_common_words,
+    analyze_sentiment_top_3
 )
 from nltk.tokenize import RegexpTokenizer
 import re
-from utils import get_top_3_negative_comments, get_top_3_positive_comments
+# from collections import Counter
+# import stanza
+import numpy as np
 
 app = FastAPI()
 
-# Load the model and tokenizer
+# Load the model, tokenizer, and NLP pipeline
 tokenizer = AutoTokenizer.from_pretrained("tokenizer")
 model = load_model("model/bert_attention.h5")
+# custom_dir = "./stanza_models"
+# nlp = stanza.Pipeline('id', dir=custom_dir)
 
 # Preprocessing functions
 def replace_emoji_with_word(text):
@@ -47,13 +52,25 @@ def tokenize_batch(texts):
         texts, padding="max_length", truncation=True, max_length=128, return_tensors="tf"
     )['input_ids']
 
-def predict_sentiment_batch(texts):
-    preprocessed_texts = [preprocess_text(text) for text in texts]
+# def predict_sentiment_batch(texts):
+#     preprocessed_texts = [preprocess_text(text) for text in texts]
+#     tokenized_texts = tokenize_batch(preprocessed_texts)
+#     predictions = model.predict(tokenized_texts)
+#     sentiment_labels = ["Negatif", "Netral", "Positif"]
+#     sentiments = [sentiment_labels[pred.argmax()] for pred in predictions]
+#     return predictions, sentiments
+
+def predict_sentiment_batch(texts, preprocess=True):
+    if preprocess:
+        preprocessed_texts = [preprocess_text(text) for text in texts]
+    else:
+        preprocessed_texts = texts
     tokenized_texts = tokenize_batch(preprocessed_texts)
     predictions = model.predict(tokenized_texts)
     sentiment_labels = ["Negatif", "Netral", "Positif"]
     sentiments = [sentiment_labels[pred.argmax()] for pred in predictions]
-    return predictions, sentiments
+    class_labels = np.argmax(predictions, axis=1)
+    return sentiments, class_labels, predictions
 
 # Input schema
 class Comment(BaseModel):
@@ -66,9 +83,9 @@ class RequestBody(BaseModel):
 async def predict_sentiments(data: RequestBody):
     # Extract text from comments
     texts = [comment.text for comment in data.comments]
-    
+    preprocessed_texts = [preprocess_text(text) for text in texts]
     # Predict sentiments and probabilities
-    predictions, sentiments = predict_sentiment_batch(texts)
+    sentiments, class_labels, predictions = predict_sentiment_batch(preprocessed_texts, preprocess=False)
     
     # Summarize sentiments
     summary = {
@@ -77,8 +94,11 @@ async def predict_sentiments(data: RequestBody):
         "Negatif": sentiments.count("Negatif"),
     }
     
+    # Get top 3 positive and negative comments
     top_3_positive = get_top_3_positive_comments(predictions, texts)
     top_3_negative = get_top_3_negative_comments(predictions, texts)
+    # Analyze the most common positive and negative words
+    pos_common_words, neg_common_words = analyze_sentiment_top_3(preprocessed_texts, class_labels)
     
     # Return results
     return {
@@ -86,4 +106,6 @@ async def predict_sentiments(data: RequestBody):
         "summary": summary,
         "top_3_positive": top_3_positive,
         "top_3_negative": top_3_negative,
+        "top_3_pos_words": pos_common_words,
+        "top_3_neg_words": neg_common_words
     }
