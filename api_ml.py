@@ -37,7 +37,7 @@ async def predict_sentiments(data: RequestBody):
     top_3_positive = utils.get_top_3_positive_comments(predictions, texts)
     top_3_negative = utils.get_top_3_negative_comments(predictions, texts)
     # Analyze the most common positive and negative words
-    pos_common_words, neg_common_words = utils.analyze_sentiment_top_3(preprocessed_texts, class_labels, stanza=nlp)
+    liked_by_cust, disliked_by_cust = utils.analyze_sentiment_top_3(preprocessed_texts, class_labels, stanza=nlp)
     
     # Return results
     return {
@@ -45,6 +45,6 @@ async def predict_sentiments(data: RequestBody):
         "summary": summary,
         "top_3_positive": top_3_positive,
         "top_3_negative": top_3_negative,
-        "top_3_pos_words": pos_common_words,
-        "top_3_neg_words": neg_common_words
+        "customers like": liked_by_cust,
+        "customers dislike": disliked_by_cust
     }
