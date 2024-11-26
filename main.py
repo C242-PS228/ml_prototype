@@ -50,7 +50,8 @@ with gr.Blocks() as sentiment_app:
         preprocessed_texts = [utils.preprocess_text(text) for text in texts_list]
         sentiments, class_labels, predictions = utils.predict_sentiment_batch(preprocessed_texts, model=model, tokenizer=tokenizer, preprocess=False)  
         summary = summarize_sentiments(sentiments)  
-        top_com_pos_words, top_com_neg_words = utils.analyze_sentiment_top_3(preprocessed_texts, class_labels, stanza=nlp)
+        top_com_pos_words, top_com_neg_words = utils.get_tag_words_bruh(preprocessed_texts, class_labels, stanza=nlp)
+        top_com_pos_words, top_com_neg_words = utils.clean_up_tags(top_com_pos_words, top_com_neg_words, tokenizer=tokenizer, model=model)
         top_3_pos_comments = utils.get_top_3_positive_comments(predictions, texts_list)
         top_3_neg_comments = utils.get_top_3_negative_comments(predictions, texts_list)
         
