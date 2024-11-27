@@ -6,6 +6,7 @@ import utils
 nlp = utils.load_stanza_pipeline()
 tokenizer = utils.load_tokenizer('tokenizer')
 model = utils.load_nlp_model("model/bert_attention_v6.h5")
+question_model = utils.load_nlp_model("model/question_bert.h5")
 
 # OUTPUT
 def summarize_sentiments(sentiments):
@@ -42,6 +43,7 @@ with gr.Blocks() as sentiment_app:
             top_3_com_neg = gr.Label(label="Yang tidak disukai customer")
             top_3_pos_comments_label = gr.Label(label="Top 3 Positive comments")
             top_3_neg_comments_label = gr.Label(label="Top 3 Negative comments")
+            customer_questions = gr.Label(label="Pertanyaan customer")
             download_csv = gr.File(label="Download CSV")
             download_excel = gr.File(label="Download Excel")
 
@@ -51,14 +53,24 @@ with gr.Blocks() as sentiment_app:
         sentiments, class_labels, predictions = utils.predict_sentiment_batch(preprocessed_texts, model=model, tokenizer=tokenizer, preprocess=False)  
         summary = summarize_sentiments(sentiments)  
         top_com_pos_words, top_com_neg_words = utils.get_tag_words_bruh(preprocessed_texts, class_labels, stanza=nlp)
-        top_com_pos_words, top_com_neg_words = utils.clean_up_tags(top_com_pos_words, top_com_neg_words, tokenizer=tokenizer, model=model)
+        top_com_pos_words, top_com_neg_words = utils.clean_up_key_words(top_com_pos_words, top_com_neg_words, tokenizer=tokenizer, model=model)
         top_3_pos_comments = utils.get_top_3_positive_comments(predictions, texts_list)
         top_3_neg_comments = utils.get_top_3_negative_comments(predictions, texts_list)
         
         # Convert top comments lists into strings
         top_3_pos_comments_text = "\n".join(top_3_pos_comments)  # Join the comments with newline
         top_3_neg_comments_text = "\n".join(top_3_neg_comments)  # Join the comments with newline
-            
+
+        # Question
+        netral_data = utils.get_netral_data(class_labels=class_labels, data=texts_list)
+        questions_str = ''
+        if len(netral_data) > 0:
+            is_questions, question_class_labels, question_predictions = utils.predict_question_batch(netral_data, model=question_model, tokenizer=tokenizer, preprocess=True)
+            questions_data = utils.get_questions(netral_data, question_class_labels)
+            # print(question_class_labels)
+            # print(is_questions)
+            questions_str = '| '.join(questions_data)
+
         summary_text = (
             f"Positif: {summary['Positif']} | "
             f"Netral: {summary['Netral']} | "
@@ -70,12 +82,12 @@ with gr.Blocks() as sentiment_app:
         csv_path = create_csv_file(texts_list, sentiments)  
         excel_path = create_excel_file(texts_list, sentiments)  
         
-        return pd.DataFrame({"Predicted Sentiment": sentiments, "Input Text": texts_list}), summary_text, top_com_pos_text, top_com_neg_text, top_3_pos_comments_text, top_3_neg_comments_text,csv_path, excel_path
+        return pd.DataFrame({"Predicted Sentiment": sentiments, "Input Text": texts_list}), summary_text, top_com_pos_text, top_com_neg_text, top_3_pos_comments_text, top_3_neg_comments_text, questions_str, csv_path, excel_path
 
     submit_btn.click(
         fn=process_texts,
         inputs=input_texts,
-        outputs=[output_labels, summary_label, top_3_com_pos, top_3_com_neg, top_3_pos_comments_label, top_3_neg_comments_label,download_csv, download_excel],
+        outputs=[output_labels, summary_label, top_3_com_pos, top_3_com_neg, top_3_pos_comments_label, top_3_neg_comments_label, customer_questions, download_csv, download_excel],
     )
 
 if __name__ == "__main__":

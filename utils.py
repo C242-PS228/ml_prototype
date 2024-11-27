@@ -499,3 +499,63 @@ def clean_up_key_words(pos_words, neg_words, tokenizer, model):
 
     return new_pos_words, new_neg_words
     
+""" QUESTION MODEL """
+
+
+def get_netral_data(class_labels, data):
+    new_data = []
+    # print(class_labels)
+    for i, label in enumerate(class_labels):
+        if label == 1:
+            new_data.append(data[i])
+    # print(new_data)
+    return new_data
+
+def stop_words_removal_question(text):
+    tokenizer = RegexpTokenizer(r'\w+|\?')
+    tokens = tokenizer.tokenize(text)
+    removed_stop_words = [word.lower() for word in tokens if word.lower() not in stop_words]
+    return ' '.join(removed_stop_words)
+
+
+def preprocess_text_question(text):
+    text = text.lower()
+    text = replace_emoji_with_word(text)
+    text = re.sub(r'@\w+', '', text).strip()
+    text = re.sub(r'\d+', '', text)
+    text = text.strip()
+
+    text = stop_words_removal_question(text)
+    return text
+
+def predict_question_batch(texts, model, tokenizer, preprocess=True, treshold=0.5):
+    if preprocess:
+        preprocessed_texts = [preprocess_text_question(text) for text in texts]
+    else:
+        preprocessed_texts = texts
+    # print(preprocessed_texts)
+    tokenized_texts = tokenize_batch(preprocessed_texts, tokenizer)
+    predictions = model.predict(tokenized_texts)
+    # print(predictions)
+    question_labels = ["Bukan Pertanyaan", "Pertanyaan"]
+    class_labels = []
+    is_questions = []
+    for pred in predictions:
+        if pred >= 0.5:
+            class_labels.append(1)
+            is_questions.append(question_labels[1])
+        else:
+            class_labels.append(0)
+            is_questions.append(question_labels[0])
+    return is_questions, class_labels, predictions
+
+def get_questions(netraL_data, class_labels):
+    questions_data = []
+    for i, label in enumerate(class_labels):
+        if label == 1:
+            questions_data.append(netraL_data[i])
+
+    return questions_data
+
+
+

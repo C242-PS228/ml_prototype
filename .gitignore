@@ -3,3 +3,4 @@ sentiment_results.csv
 sentiment_results.xlsx
 model
 stanza_models
+__pycache__
