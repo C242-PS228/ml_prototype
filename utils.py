@@ -274,3 +274,40 @@ def get_top_3_negative_comments(predictions, data):
     comments = indices_to_texts(top_3_negative_idx, data)
 
     return comments
+
+from nltk.tokenize import RegexpTokenizer
+import re
+import pandas as pd
+
+def replace_emoji_with_word(text):
+    for emoji, word in emoji_dict.items():
+        text = re.sub(f'({emoji})+', f' {word} ', text)
+    return text.strip()
+
+def stop_words_removal(text):
+    tokenizer = RegexpTokenizer(r'\w+')
+    tokens = tokenizer.tokenize(text)
+    removed_stop_words = [word.lower() for word in tokens if word.lower() not in stop_words]
+    return ' '.join(removed_stop_words)
+
+def preprocess_text(text):
+    text = text.lower()
+    text = replace_emoji_with_word(text)
+    text = re.sub(r'\d+', '', text)
+    text = re.sub(r'[^\w\s]', '', text)
+    text = text.strip()
+    text = stop_words_removal(text)
+    return text
+
+# def tokenize_batch(texts):
+#     return tokenizer(
+#         texts, padding="max_length", truncation=True, max_length=128, return_tensors="tf"
+#     )['input_ids']
+
+# def predict_sentiment_batch(texts, model):
+#     preprocessed_texts = [preprocess_text(text) for text in texts]
+#     tokenized_texts = tokenize_batch(preprocessed_texts)
+#     predictions = model.predict(tokenized_texts)
+#     sentiment_labels = ["Negatif", "Netral", "Positif"]
+#     sentiments = [sentiment_labels[pred.argmax()] for pred in predictions]
+#     return predictions, sentiments

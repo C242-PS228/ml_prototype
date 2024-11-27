@@ -6,3 +6,4 @@ model/bert_attention_adam_v2.h5
 model/bert_attention_adam.h5
 model
 venv
+stanza_models
