@@ -1,50 +1,11 @@
 import gradio as gr
-import re
 import pandas as pd
-from transformers import AutoTokenizer
-from tensorflow.keras.models import load_model
-from utils import emoji_dict, stop_words
-from nltk.tokenize import RegexpTokenizer
-import io
+import utils
 
-tokenizer = AutoTokenizer.from_pretrained("tokenizer")
-model = load_model("model/bert_attention_adam_v2.h5")
-# model = load_model("model/bert_attention_v5.h5")
-
-# PREPROCESSING
-def replace_emoji_with_word(text):
-    for emoji, word in emoji_dict.items():
-        text = re.sub(f'({emoji})+', f' {word} ', text)
-    return text.strip()
-
-def stop_words_removal(text):
-    tokenizer = RegexpTokenizer(r'\w+')
-    tokens = tokenizer.tokenize(text)
-    removed_stop_words = [word.lower() for word in tokens if word.lower() not in stop_words]
-    return ' '.join(removed_stop_words)
-
-def preprocess_text(text):
-    text = text.lower()
-    text = replace_emoji_with_word(text)
-    text = re.sub(r'\d+', '', text)
-    text = re.sub(r'[^\w\s]', '', text)
-    text = text.strip()
-    text = stop_words_removal(text)
-    return text
-
-def tokenize_batch(texts):
-    return tokenizer(
-        texts, padding="max_length", truncation=True, max_length=128, return_tensors="tf"
-    )['input_ids']
-
-# PREDICT
-def predict_sentiment_batch(texts):
-    preprocessed_texts = [preprocess_text(text) for text in texts]
-    tokenized_texts = tokenize_batch(preprocessed_texts)
-    predictions = model.predict(tokenized_texts)
-    sentiment_labels = ["Negatif", "Netral", "Positif"]
-    sentiments = [sentiment_labels[pred.argmax()] for pred in predictions]
-    return sentiments
+# Load models and tools
+nlp = utils.load_stanza_pipeline()
+tokenizer = utils.load_tokenizer('tokenizer')
+model = utils.load_nlp_model("model/bert_attention_v6.h5")
 
 # OUTPUT
 def summarize_sentiments(sentiments):
@@ -77,26 +38,44 @@ with gr.Blocks() as sentiment_app:
         with gr.Column():
             output_labels = gr.Dataframe(headers=["Predicted Sentiment", "Input Text"], interactive=False)
             summary_label = gr.Label(label="Summary of Sentiments")
+            top_3_com_pos = gr.Label(label="Yang disukai customer")
+            top_3_com_neg = gr.Label(label="Yang tidak disukai customer")
+            top_3_pos_comments_label = gr.Label(label="Top 3 Positive comments")
+            top_3_neg_comments_label = gr.Label(label="Top 3 Negative comments")
             download_csv = gr.File(label="Download CSV")
             download_excel = gr.File(label="Download Excel")
 
     def process_texts(texts):
         texts_list = texts.split("\n")  
-        sentiments = predict_sentiment_batch(texts_list)  
+        preprocessed_texts = [utils.preprocess_text(text) for text in texts_list]
+        sentiments, class_labels, predictions = utils.predict_sentiment_batch(preprocessed_texts, model=model, tokenizer=tokenizer, preprocess=False)  
         summary = summarize_sentiments(sentiments)  
+        top_com_pos_words, top_com_neg_words = utils.analyze_sentiment_top_3(preprocessed_texts, class_labels, stanza=nlp)
+        top_3_pos_comments = utils.get_top_3_positive_comments(predictions, texts_list)
+        top_3_neg_comments = utils.get_top_3_negative_comments(predictions, texts_list)
+        
+        # Convert top comments lists into strings
+        top_3_pos_comments_text = "\n".join(top_3_pos_comments)  # Join the comments with newline
+        top_3_neg_comments_text = "\n".join(top_3_neg_comments)  # Join the comments with newline
+            
         summary_text = (
             f"Positif: {summary['Positif']} | "
             f"Netral: {summary['Netral']} | "
             f"Negatif: {summary['Negatif']}"
         )
+        top_com_pos_text = ", ".join(top_com_pos_words)
+        top_com_neg_text = ", ".join(top_com_neg_words)
+        
         csv_path = create_csv_file(texts_list, sentiments)  
         excel_path = create_excel_file(texts_list, sentiments)  
-        return pd.DataFrame({"Predicted Sentiment": sentiments, "Input Text": texts_list}), summary_text, csv_path, excel_path
+        
+        return pd.DataFrame({"Predicted Sentiment": sentiments, "Input Text": texts_list}), summary_text, top_com_pos_text, top_com_neg_text, top_3_pos_comments_text, top_3_neg_comments_text,csv_path, excel_path
 
     submit_btn.click(
         fn=process_texts,
         inputs=input_texts,
-        outputs=[output_labels, summary_label, download_csv, download_excel],
+        outputs=[output_labels, summary_label, top_3_com_pos, top_3_com_neg, top_3_pos_comments_label, top_3_neg_comments_label,download_csv, download_excel],
     )
 
-sentiment_app.launch(share=True)
+if __name__ == "__main__":
+    sentiment_app.launch()
