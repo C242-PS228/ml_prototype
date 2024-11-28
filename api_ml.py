@@ -8,6 +8,7 @@ app = FastAPI()
 # Load the model, tokenizer, and NLP pipeline
 tokenizer = utils.load_tokenizer("tokenizer")
 model = utils.load_nlp_model("model/bert_attention_v6.h5")
+question_model = utils.load_nlp_model("model/question_bert.h5")
 
 nlp = utils.load_stanza_pipeline()
 
@@ -37,12 +38,19 @@ async def predict_sentiments(data: RequestBody):
     top_3_negative = utils.get_top_3_negative_comments(predictions, texts)
     
     # Analyze the most common positive and negative key_words
-    liked_by_cust, disliked_by_cust = utils.get_key_words_and_clean_up(preprocessed_texts, class_labels, stanza=nlp)
+    liked_by_cust, disliked_by_cust = utils.get_key_words_and_clean_up(preprocessed_texts, class_labels, stanza=nlp, model=model, tokenizer=tokenizer)
     
     # Convert key_words to the desired format
     positive_key_words = [{"tagname": tag, "value": count} for tag, count in liked_by_cust.items()]
     negative_key_words = [{"tagname": tag, "value": count} for tag, count in disliked_by_cust.items()]
-    
+
+    # Question
+    netral_data = utils.get_netral_data(class_labels=class_labels, data=texts)
+    questions_data = []
+    if len(netral_data) > 0:
+        is_questions, question_class_labels, question_predictions = utils.predict_question_batch(netral_data, model=question_model, tokenizer=tokenizer, preprocess=True)
+        questions_data = utils.get_questions(netral_data, question_class_labels)
+
     # Return results in the new format
     return {
         "data": {
@@ -56,6 +64,7 @@ async def predict_sentiments(data: RequestBody):
             "key_words": {
                 "positive": positive_key_words,
                 "negative": negative_key_words
-            }
+            },
+            "questions": questions_data
         }
     }

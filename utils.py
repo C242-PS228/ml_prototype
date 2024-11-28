@@ -463,8 +463,8 @@ def get_key_words_and_clean_up(preprocessed_texts, class_labels, stanza, tokeniz
 
 
 def get_tag_words(pos_common_words, neg_common_words):
-    top_3_pos_words = [word for word, _ in pos_common_words]
-    top_3_neg_words = [word for word, _ in neg_common_words]
+    top_3_pos_words = [word for word, _ in pos_common_words.items()]
+    top_3_neg_words = [word for word, _ in neg_common_words.items()]
     
     return top_3_pos_words, top_3_neg_words
 
