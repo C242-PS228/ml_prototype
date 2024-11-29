@@ -239,11 +239,12 @@ nouns = [
 ]
 
 exclude_words = ['gua', 'kak', 'gue', 'sih', 'kasih', 'banget', 'orang', 'bu', 'sumpah', 'gitu', 'bnyak', 'banyak', 'gt', 'gitu', 'duo', 'dua', 'satu', 'min', 'pesen', 'brp', 'berapa','memang', 'mmg', 'udh', 'udah', 'uda', 'niat', 'tp', 'tapi']
+exclude_nouns = ['beban', 'nakal']
 
 adjectives = [
     "fresh", "sweet", "spicy", "bland", "cold", 
     "hot", "overpriced", "quick", "trendy", "comfortable", "stylish", "soft", "cheap", "fast", "reliable", "innovative", "responsive", "friendly", "helpful", "unprofessional", 'professional', 
-    "amazing", "terrible", "good", "bad", "cozy", "comfy", 'cakep', 'keren', 'gokil'
+    "amazing", "terrible", "good", "bad", "cozy", "comfy", 'cakep', 'keren', 'gokil', 'beban', 'nakal'
 ]
 
 
@@ -267,7 +268,7 @@ def preprocess_text(text):
     text = re.sub(r'\d+', '', text)
     text = re.sub(r'[^\w\s]', '', text)
     text = text.strip()
-    text = stop_words_removal(text)
+    text = stop_words_removal_question(text)
     return text
 
 # Model and tokenizer
@@ -397,16 +398,31 @@ def get_key_words(preprocessed_texts, class_labels, stanza):
                     previous_noun = None
                     continue
 
+                # Handle nouns
                 if word.upos == "NOUN" or word_text in nouns:
                     previous_noun = word_text
-
-                elif (word.upos == "ADJ" or word_text in adjectives) and previous_noun:
-                    phrase = f"{previous_noun} {word_text}"
+                     # Standalone nouns
                     if label == 2:
-                        pos_dict[phrase] = pos_dict.get(phrase, 0) + 1
+                        pos_dict[word_text] = pos_dict.get(word_text, 0) + 1
                     elif label == 0:
-                        neg_dict[phrase] = neg_dict.get(phrase, 0) + 1
-                    previous_noun = None
+                        neg_dict[word_text] = neg_dict.get(word_text, 0) + 1
+
+                # Handle adjectives with or without nouns
+                elif word.upos == "ADJ" or word_text in adjectives:
+                    if previous_noun:
+                        # Noun-adjective phrase
+                        phrase = f"{previous_noun} {word_text}"
+                        if label == 2:
+                            pos_dict[phrase] = pos_dict.get(phrase, 0) + 1
+                        elif label == 0:
+                            neg_dict[phrase] = neg_dict.get(phrase, 0) + 1
+                        previous_noun = None
+                    else:
+                        # Standalone adjective
+                        if label == 2:
+                            pos_dict[word_text] = pos_dict.get(word_text, 0) + 1
+                        elif label == 0:
+                            neg_dict[word_text] = neg_dict.get(word_text, 0) + 1
 
     return pos_dict, neg_dict
 
@@ -426,17 +442,26 @@ def get_key_words_and_clean_up(preprocessed_texts, class_labels, stanza, tokeniz
                 if word_text in exclude_words:
                     previous_noun = None
                     continue
+                
+                if word.upos == "ADJ" or word_text in adjectives:
+                    if previous_noun:
+                        # Noun-adjective phrase
+                        phrase = f"{previous_noun} {word_text}"
+                        if label == 2:
+                            pos_dict[phrase] = pos_dict.get(phrase, 0) + 1
+                        elif label == 0:
+                            neg_dict[phrase] = neg_dict.get(phrase, 0) + 1
+                        previous_noun = None
+                    else:
+                        # Standalone adjective
+                        if label == 2:
+                            pos_dict[word_text] = pos_dict.get(word_text, 0) + 1
+                        elif label == 0:
+                            neg_dict[word_text] = neg_dict.get(word_text, 0) + 1
 
-                if word.upos == "NOUN" or word_text in nouns:
+                # Handle nouns
+                elif word.upos == "NOUN" or word_text in nouns:
                     previous_noun = word_text
-
-                elif (word.upos == "ADJ" or word_text in adjectives) and previous_noun:
-                    phrase = f"{previous_noun} {word_text}"
-                    if label == 2:
-                        pos_dict[phrase] = pos_dict.get(phrase, 0) + 1
-                    elif label == 0:
-                        neg_dict[phrase] = neg_dict.get(phrase, 0) + 1
-                    previous_noun = None
 
     pos_arr, neg_arr = get_tag_words(pos_dict, neg_dict)
     if len(pos_arr) > 0:
@@ -460,6 +485,7 @@ def get_key_words_and_clean_up(preprocessed_texts, class_labels, stanza, tokeniz
                 del neg_dict[word]
 
     return pos_dict, neg_dict
+
 
 
 def get_tag_words(pos_common_words, neg_common_words):
