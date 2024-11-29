@@ -52,8 +52,8 @@ async def predict_sentiments(data: RequestBody):
     # Get the username of the top comments
     top_3_pos_username = utils.get_username(texts_to_index_map, top_3_positive, usernames)
     top_3_neg_username = utils.get_username(texts_to_index_map, top_3_negative, usernames)
-    top_3_pos_comments_username = [{"username": top_3_pos_username[i], "text": top_3_positive[i]} for i in range(3)]
-    top_3_neg_comments_username = [{"username": top_3_neg_username[i], "text": top_3_negative[i]} for i in range(3)]
+    top_3_pos_comments_username = [{"username": top_3_pos_username[i], "text": top_3_positive[i]} for i in range(len(top_3_positive))]
+    top_3_neg_comments_username = [{"username": top_3_neg_username[i], "text": top_3_negative[i]} for i in range(len(top_3_negative))]
         
     # Analyze the most common positive and negative key_words
     liked_by_cust, disliked_by_cust = utils.get_key_words_and_clean_up(preprocessed_texts, class_labels, stanza=nlp, model=model, tokenizer=tokenizer)
