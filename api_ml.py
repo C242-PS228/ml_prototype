@@ -1,7 +1,8 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
-from typing import List, Dict
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, Field
+from typing import List, Dict, Optional
 import utils
+
 
 app = FastAPI()
 
@@ -12,17 +13,23 @@ question_model = utils.load_nlp_model("model/question_bert.h5")
 
 nlp = utils.load_stanza_pipeline()
 
-# Input schema
 class Comment(BaseModel):
-    text: str
+    text: Optional[str] = Field(None, description="Comment text can be null or missing.")
 
 class RequestBody(BaseModel):
     comments: List[Comment]
 
 @app.post("/predict")
 async def predict_sentiments(data: RequestBody):
-    # Extract text from comments
-    texts = [comment.text for comment in data.comments]
+    # Filter out comments with null or empty text and handle errors
+    texts = [comment.text for comment in data.comments if comment.text is not None and comment.text.strip()]
+    
+    if not texts:
+        raise HTTPException(status_code=400, detail="All comments are null, empty, or missing text.")
+
+    if not texts:
+        return {"error": "No valid text provided for prediction."}
+
     preprocessed_texts = [utils.preprocess_text(text) for text in texts]
     
     # Predict sentiments and probabilities

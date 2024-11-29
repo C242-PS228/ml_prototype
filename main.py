@@ -5,7 +5,7 @@ import utils
 # Load models and tools
 nlp = utils.load_stanza_pipeline()
 tokenizer = utils.load_tokenizer('tokenizer')
-model = utils.load_nlp_model("model/bert_attention_v6.h5")
+model = utils.load_nlp_model("model/bert_attention_v7.h5")
 question_model = utils.load_nlp_model("model/question_bert.h5")
 
 # OUTPUT
