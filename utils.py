@@ -584,4 +584,12 @@ def get_questions(netraL_data, class_labels):
     return questions_data
 
 
+def get_username(comments_to_idx, comments, usernames):
+    extracted_username = []
+    for comment in comments:
+        pos_idx = comments_to_idx[comment]
+        username = usernames[pos_idx]
+        extracted_username.append(username)
 
+    return extracted_username
+    
