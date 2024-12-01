@@ -8,9 +8,9 @@ app = FastAPI()
 
 # Load the model, tokenizer, and NLP pipeline
 tokenizer = utils.load_tokenizer("tokenizer")
-model = utils.load_nlp_model("model/bert_attention_v6.h5")
+model = utils.load_nlp_model("model/bert_attention_v11.h5")
 question_model = utils.load_nlp_model("model/question_bert.h5")
-assistance_model = utils.load_nlp_model("model/assistance_bert.h5")
+assistance_model = utils.load_nlp_model("model/assistance_bert_v2.h5")
 
 nlp = utils.load_stanza_pipeline()
 
@@ -38,6 +38,8 @@ async def predict_sentiments(data: RequestBody):
         raise HTTPException(status_code=400, detail="All comments are null, empty, or missing text.")
 
     preprocessed_texts = [utils.preprocess_text(text) for text in texts]
+
+    # print(preprocessed_texts)
     
     # Predict sentiments and probabilities
     sentiments, class_labels, predictions = utils.predict_sentiment_batch(preprocessed_texts, model=model, tokenizer=tokenizer, preprocess=False)

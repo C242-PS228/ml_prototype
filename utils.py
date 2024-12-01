@@ -602,7 +602,7 @@ def predict_assistance_batch(texts, model, tokenizer, preprocess=True, treshold=
     # print(preprocessed_texts)
     tokenized_texts = tokenize_batch(preprocessed_texts, tokenizer)
     predictions = model.predict(tokenized_texts)
-    # print(predictions)
+    print(predictions)
     question_labels = ["Bukan Minta Assistance", "Minta Assistance"]
     class_labels = []
     is_questions = []

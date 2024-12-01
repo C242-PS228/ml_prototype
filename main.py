@@ -5,7 +5,7 @@ import utils
 # Load models and tools
 nlp = utils.load_stanza_pipeline()
 tokenizer = utils.load_tokenizer('tokenizer')
-model = utils.load_nlp_model("model/bert_attention_v7.h5")
+model = utils.load_nlp_model("model/bert_attention_v11.h5")
 question_model = utils.load_nlp_model("model/question_bert.h5")
 assistance_model = utils.load_nlp_model("model/assistance_bert.h5")
 
@@ -75,8 +75,13 @@ with gr.Blocks() as sentiment_app:
             questions_str = '| '.join(questions_data)
 
         is_assistances, assistance_class_labels, assistance_predictions = utils.predict_assistance_batch(preprocessed_texts, model=assistance_model, tokenizer=tokenizer)
-        assistances_data = utils.get_questions_or_assistance(texts, assistance_class_labels)
-        assistances_str = '| '.join(questions_data)
+        # print(f"woiii {assistance_predictions}")
+        # print(f"ppp {assistance_class_labels}")
+        # print(f"akwowkii {is_assistances}")
+        print(f"texts {texts}")
+        print(f"netral_data {netral_data}")
+        assistances_data = utils.get_questions_or_assistance(texts_list, assistance_class_labels)
+        assistances_str = '| '.join(assistances_data)
 
         summary_text = (
             f"Positif: {summary['Positif']} | "
