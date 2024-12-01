@@ -575,7 +575,7 @@ def predict_question_batch(texts, model, tokenizer, preprocess=True, treshold=0.
             is_questions.append(question_labels[0])
     return is_questions, class_labels, predictions
 
-def get_questions(netraL_data, class_labels):
+def get_questions_or_assistance(netraL_data, class_labels):
     questions_data = []
     for i, label in enumerate(class_labels):
         if label == 1:
@@ -593,3 +593,24 @@ def get_username(comments_to_idx, comments, usernames):
 
     return extracted_username
     
+
+def predict_assistance_batch(texts, model, tokenizer, preprocess=True, treshold=0.5):
+    if preprocess:
+        preprocessed_texts = [preprocess_text_question(text) for text in texts]
+    else:
+        preprocessed_texts = texts
+    # print(preprocessed_texts)
+    tokenized_texts = tokenize_batch(preprocessed_texts, tokenizer)
+    predictions = model.predict(tokenized_texts)
+    # print(predictions)
+    question_labels = ["Bukan Minta Assistance", "Minta Assistance"]
+    class_labels = []
+    is_questions = []
+    for pred in predictions:
+        if pred >= 0.5:
+            class_labels.append(1)
+            is_questions.append(question_labels[1])
+        else:
+            class_labels.append(0)
+            is_questions.append(question_labels[0])
+    return is_questions, class_labels, predictions

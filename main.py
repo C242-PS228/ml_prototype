@@ -7,6 +7,7 @@ nlp = utils.load_stanza_pipeline()
 tokenizer = utils.load_tokenizer('tokenizer')
 model = utils.load_nlp_model("model/bert_attention_v7.h5")
 question_model = utils.load_nlp_model("model/question_bert.h5")
+assistance_model = utils.load_nlp_model("model/assistance_bert.h5")
 
 # OUTPUT
 def summarize_sentiments(sentiments):
@@ -44,6 +45,7 @@ with gr.Blocks() as sentiment_app:
             top_3_pos_comments_label = gr.Label(label="Top 3 Positive comments")
             top_3_neg_comments_label = gr.Label(label="Top 3 Negative comments")
             customer_questions = gr.Label(label="Pertanyaan customer")
+            seek_assistance = gr.Label(label="Meminta bantuan")
             download_csv = gr.File(label="Download CSV")
             download_excel = gr.File(label="Download Excel")
 
@@ -64,12 +66,17 @@ with gr.Blocks() as sentiment_app:
         # Question
         netral_data = utils.get_netral_data(class_labels=class_labels, data=texts_list)
         questions_str = ''
+        seek_assistance_str = ''
         if len(netral_data) > 0:
             is_questions, question_class_labels, question_predictions = utils.predict_question_batch(netral_data, model=question_model, tokenizer=tokenizer, preprocess=True)
-            questions_data = utils.get_questions(netral_data, question_class_labels)
+            questions_data = utils.get_questions_or_assistance(netral_data, question_class_labels)
             # print(question_class_labels)
             # print(is_questions)
             questions_str = '| '.join(questions_data)
+
+        is_assistances, assistance_class_labels, assistance_predictions = utils.predict_assistance_batch(preprocessed_texts, model=assistance_model, tokenizer=tokenizer)
+        assistances_data = utils.get_questions_or_assistance(texts, assistance_class_labels)
+        assistances_str = '| '.join(questions_data)
 
         summary_text = (
             f"Positif: {summary['Positif']} | "
@@ -82,12 +89,12 @@ with gr.Blocks() as sentiment_app:
         csv_path = create_csv_file(texts_list, sentiments)  
         excel_path = create_excel_file(texts_list, sentiments)  
         
-        return pd.DataFrame({"Predicted Sentiment": sentiments, "Input Text": texts_list}), summary_text, top_com_pos_text, top_com_neg_text, top_3_pos_comments_text, top_3_neg_comments_text, questions_str, csv_path, excel_path
+        return pd.DataFrame({"Predicted Sentiment": sentiments, "Input Text": texts_list}), summary_text, top_com_pos_text, top_com_neg_text, top_3_pos_comments_text, top_3_neg_comments_text, questions_str, assistances_str,csv_path, excel_path
 
     submit_btn.click(
         fn=process_texts,
         inputs=input_texts,
-        outputs=[output_labels, summary_label, top_3_com_pos, top_3_com_neg, top_3_pos_comments_label, top_3_neg_comments_label, customer_questions, download_csv, download_excel],
+        outputs=[output_labels, summary_label, top_3_com_pos, top_3_com_neg, top_3_pos_comments_label, top_3_neg_comments_label, customer_questions, seek_assistance,download_csv, download_excel],
     )
 
 if __name__ == "__main__":

@@ -10,6 +10,7 @@ app = FastAPI()
 tokenizer = utils.load_tokenizer("tokenizer")
 model = utils.load_nlp_model("model/bert_attention_v6.h5")
 question_model = utils.load_nlp_model("model/question_bert.h5")
+assistance_model = utils.load_nlp_model("model/assistance_bert.h5")
 
 nlp = utils.load_stanza_pipeline()
 
@@ -67,11 +68,15 @@ async def predict_sentiments(data: RequestBody):
     questions_data = []
     if len(netral_data) > 0:
         is_questions, question_class_labels, question_predictions = utils.predict_question_batch(netral_data, model=question_model, tokenizer=tokenizer, preprocess=True)
-        questions_data = utils.get_questions(netral_data, question_class_labels)
+        questions_data = utils.get_questions_or_assistance(netral_data, question_class_labels)
 
     q_usernames = utils.get_username(texts_to_index_map, questions_data, usernames)
     len_questions = len(questions_data)
     questions_usernames_map = [{"username": q_usernames[i], "text": questions_data[i]} for i in range(len_questions)]
+
+    # Assistance
+    is_assistances, assistance_class_labels, assistance_predictions = utils.predict_assistance_batch(texts, model=assistance_model, tokenizer=tokenizer, preprocess=True)
+    assistances_data = utils.get_questions_or_assistance(texts, assistance_class_labels)
 
     # Return results in the new format
     return {
@@ -87,6 +92,7 @@ async def predict_sentiments(data: RequestBody):
                 "positive": positive_key_words,
                 "negative": negative_key_words
             },
-            "questions": questions_usernames_map
+            "questions": questions_usernames_map,
+            "assistances": assistances_data
         }
     }
