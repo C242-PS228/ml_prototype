@@ -8,7 +8,7 @@ app = FastAPI()
 
 # Load the model, tokenizer, and NLP pipeline
 tokenizer = utils.load_tokenizer("tokenizer")
-model = utils.load_nlp_model("model/bert_attention_v11.h5")
+model = utils.load_nlp_model("model/bert_attention_v13.h5")
 question_model = utils.load_nlp_model("model/question_bert.h5")
 assistance_model = utils.load_nlp_model("model/assistance_bert_v2.h5")
 
@@ -59,7 +59,8 @@ async def predict_sentiments(data: RequestBody):
     top_3_neg_comments_username = [{"username": top_3_neg_username[i], "text": top_3_negative[i]} for i in range(len(top_3_negative))]
         
     # Analyze the most common positive and negative key_words
-    liked_by_cust, disliked_by_cust = utils.get_key_words_and_clean_up(preprocessed_texts, class_labels, stanza=nlp, model=model, tokenizer=tokenizer)
+    filtered_comments_keywords, filtered_class_labels = utils.limit_and_filter_comments_400(preprocessed_texts, class_labels=class_labels)
+    liked_by_cust, disliked_by_cust = utils.get_key_words_and_clean_up(filtered_comments_keywords, filtered_class_labels, stanza=nlp, model=model, tokenizer=tokenizer)
     
     # Convert key_words to the desired format
     positive_key_words = [{"tagname": tag, "value": count} for tag, count in liked_by_cust.items()]
@@ -76,11 +77,12 @@ async def predict_sentiments(data: RequestBody):
     len_questions = len(questions_data)
     questions_usernames_map = [{"username": q_usernames[i], "text": questions_data[i]} for i in range(len_questions)]
 
-    # Assistance
     is_assistances, assistance_class_labels, assistance_predictions = utils.predict_assistance_batch(texts, model=assistance_model, tokenizer=tokenizer, preprocess=True)
     assistances_data = utils.get_questions_or_assistance(texts, assistance_class_labels)
+    a_usernames = utils.get_username(texts_to_index_map, assistances_data, usernames)
+    len_assistances = len(assistances_data)
+    assistances_usernames_map = [{"username": a_usernames[i], "text": assistances_data[i]} for i in range(len_assistances)]
 
-    # Return results in the new format
     return {
         "data": {
             "positive": positive_count,
@@ -95,6 +97,6 @@ async def predict_sentiments(data: RequestBody):
                 "negative": negative_key_words
             },
             "questions": questions_usernames_map,
-            "assistances": assistances_data
+            "assistances": assistances_usernames_map
         }
     }

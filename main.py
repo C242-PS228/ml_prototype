@@ -5,7 +5,7 @@ import utils
 # Load models and tools
 nlp = utils.load_stanza_pipeline()
 tokenizer = utils.load_tokenizer('tokenizer')
-model = utils.load_nlp_model("model/bert_attention_v11.h5")
+model = utils.load_nlp_model("model/bert_attention_v13.h5")
 question_model = utils.load_nlp_model("model/question_bert.h5")
 assistance_model = utils.load_nlp_model("model/assistance_bert.h5")
 
@@ -54,8 +54,16 @@ with gr.Blocks() as sentiment_app:
         preprocessed_texts = [utils.preprocess_text(text) for text in texts_list]
         sentiments, class_labels, predictions = utils.predict_sentiment_batch(preprocessed_texts, model=model, tokenizer=tokenizer, preprocess=False)  
         summary = summarize_sentiments(sentiments)  
-        top_com_pos_dict, top_com_neg_dict = utils.get_key_words_and_clean_up(preprocessed_texts, class_labels, stanza=nlp, tokenizer=tokenizer, model=model)
+
+        # Key Words
+        filtered_comments_keywords, filtered_class_labels = utils.limit_and_filter_comments_400(preprocessed_texts, class_labels=class_labels)
+        print(f"woii {len(filtered_comments_keywords)}")
+        print(f"woii {len(filtered_class_labels)}")
+        top_com_pos_dict, top_com_neg_dict = utils.get_key_words_and_clean_up(filtered_comments_keywords, filtered_class_labels, stanza=nlp, tokenizer=tokenizer, model=model)
         top_com_pos_words, top_com_neg_words = [word for word, _ in top_com_pos_dict.items()], [word for word, _ in top_com_neg_dict.items()]
+        # top_com_pos_words, top_com_neg_words = [], []
+
+        # Top Positive and Top Negative
         top_3_pos_comments = utils.get_top_3_positive_comments(predictions, texts_list)
         top_3_neg_comments = utils.get_top_3_negative_comments(predictions, texts_list)
         
@@ -78,8 +86,8 @@ with gr.Blocks() as sentiment_app:
         # print(f"woiii {assistance_predictions}")
         # print(f"ppp {assistance_class_labels}")
         # print(f"akwowkii {is_assistances}")
-        print(f"texts {texts}")
-        print(f"netral_data {netral_data}")
+        # print(f"texts {texts}")
+        # print(f"netral_data {netral_data}")
         assistances_data = utils.get_questions_or_assistance(texts_list, assistance_class_labels)
         assistances_str = '| '.join(assistances_data)
 

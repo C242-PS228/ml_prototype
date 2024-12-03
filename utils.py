@@ -7,6 +7,11 @@ from collections import Counter
 import stanza
 import re
 import pandas as pd
+import base64
+import vertexai
+from vertexai.generative_models import GenerativeModel, SafetySetting, Part
+import os
+import random
 
 emoji_dict = {'😀': 'senyum',
  '😃': 'senyum',
@@ -238,8 +243,8 @@ nouns = [
     'ga', 'ngga', 'nggak'
 ]
 
-exclude_words = ['gua', 'kak', 'gue', 'sih', 'kasih', 'banget', 'orang', 'bu', 'sumpah', 'gitu', 'bnyak', 'banyak', 'gt', 'gitu', 'duo', 'dua', 'satu', 'min', 'pesen', 'brp', 'berapa','memang', 'mmg', 'udh', 'udah', 'uda', 'niat', 'tp', 'tapi']
-exclude_nouns = ['beban', 'nakal']
+exclude_words = ['gua', 'kak', 'gue', 'sih', 'kasih', 'banget', 'orang', 'bu', 'sumpah', 'gitu', 'bnyak', 'banyak', 'gt', 'gitu', 'duo', 'dua', 'satu', 'min', 'pesen', 'brp', 'berapa','memang', 'mmg', 'udh', 'udah', 'uda', 'niat', 'tp', 'tapi', 'a', 'i', 'u', 'e', 'o']
+exclude_nouns = ['beban', 'nakal', 'a', 'e', 'biar', 'dpt']
 
 adjectives = [
     "fresh", "sweet", "spicy", "bland", "cold", 
@@ -442,8 +447,11 @@ def get_key_words_and_clean_up(preprocessed_texts, class_labels, stanza, tokeniz
                 if word_text in exclude_words:
                     previous_noun = None
                     continue
+                # Handle nouns
+                if (word.upos == "NOUN" or word_text in nouns) and word_text not in exclude_nouns:
+                    previous_noun = word_text
                 
-                if word.upos == "ADJ" or word_text in adjectives:
+                elif word.upos == "ADJ" or word_text in adjectives:
                     if previous_noun:
                         # Noun-adjective phrase
                         phrase = f"{previous_noun} {word_text}"
@@ -452,16 +460,7 @@ def get_key_words_and_clean_up(preprocessed_texts, class_labels, stanza, tokeniz
                         elif label == 0:
                             neg_dict[phrase] = neg_dict.get(phrase, 0) + 1
                         previous_noun = None
-                    else:
-                        # Standalone adjective
-                        if label == 2:
-                            pos_dict[word_text] = pos_dict.get(word_text, 0) + 1
-                        elif label == 0:
-                            neg_dict[word_text] = neg_dict.get(word_text, 0) + 1
 
-                # Handle nouns
-                elif word.upos == "NOUN" or word_text in nouns:
-                    previous_noun = word_text
 
     pos_arr, neg_arr = get_tag_words(pos_dict, neg_dict)
     if len(pos_arr) > 0:
@@ -614,3 +613,153 @@ def predict_assistance_batch(texts, model, tokenizer, preprocess=True, treshold=
             class_labels.append(0)
             is_questions.append(question_labels[0])
     return is_questions, class_labels, predictions
+
+import random
+
+def limit_and_filter_comments_400(texts, class_labels):
+    positive_comments = []
+    negative_comments = []
+    new_class_labels = []
+
+    # Separate comments by class labels
+    for i, label in enumerate(class_labels):
+        if label == 2:  # Positive
+            positive_comments.append(texts[i])
+        elif label == 0:  # Negative
+            negative_comments.append(texts[i])
+
+    # If total comments are less than or equal to 400, return them as is
+    if len(positive_comments) + len(negative_comments) <= 400:
+        new_class_labels = [2] * len(positive_comments) + [0] * len(negative_comments)
+        return positive_comments + negative_comments, new_class_labels
+
+    # Calculate the reduction strategy
+    if len(positive_comments) > len(negative_comments):
+        keep_negative = min(len(negative_comments), 400)
+        keep_positive = 400 - keep_negative
+    elif len(negative_comments) > len(positive_comments):
+        keep_positive = min(len(positive_comments), 400)
+        keep_negative = 400 - keep_positive
+    else:
+        keep_positive = keep_negative = 200
+
+    # Randomly sample comments to keep
+    reduced_positive_comments = random.sample(positive_comments, min(keep_positive, len(positive_comments)))
+    reduced_negative_comments = random.sample(negative_comments, min(keep_negative, len(negative_comments)))
+
+    # Update class labels
+    new_class_labels = [2] * len(reduced_positive_comments) + [0] * len(reduced_negative_comments)
+
+    # Combine and shuffle the reduced comments and labels for fairness
+    reduced_comments = reduced_positive_comments + reduced_negative_comments
+    combined = list(zip(reduced_comments, new_class_labels))
+    random.shuffle(combined)
+
+    reduced_comments, new_class_labels = zip(*combined)
+    return list(reduced_comments), list(new_class_labels)
+
+
+def get_key_words_and_clean_up_v2(preprocessed_texts, class_labels, stanza, tokenizer, model):
+    nlp = stanza
+    pos_dict = {}
+    neg_dict = {}
+
+
+    for text, label in zip(preprocessed_texts, class_labels):
+        doc = nlp(text)
+
+        for sent in doc.sentences:
+            for word in sent.words:
+                # Filter based on dependency and POS
+                if word.deprel == "amod" and len(word.text) > 2:
+                    head_word = sent.words[word.head - 1]
+                    if head_word.upos == "NOUN" and len(head_word.text) > 2:
+                        noun = head_word.text.lower()
+                        adj = word.text.lower()
+
+                        # Skip if either adjective or noun is in custom stopwords
+                        if noun in exclude_nouns or adj in exclude_nouns:
+                            continue
+
+                        # Form the phrase and count
+                        phrase = f"{noun} {adj}"
+                        if label == 2:  # Positive
+                            pos_dict[phrase] = pos_dict.get(phrase, 0) + 1
+                        elif label == 0:  # Negative
+                            neg_dict[phrase] = neg_dict.get(phrase, 0) + 1
+
+    # Apply frequency threshold filter: keep phrases appearing more than once
+    pos_dict = {k: v for k, v in pos_dict.items() if v > 1}
+    neg_dict = {k: v for k, v in neg_dict.items() if v > 1}
+
+    pos_arr, neg_arr = get_tag_words(pos_dict, neg_dict)
+    if len(pos_arr) > 0:
+        pos_tokenized = tokenize_batch(pos_arr, tokenizer)
+        true_pos_label = model.predict(pos_tokenized)
+        class_labels_pos = np.argmax(true_pos_label, axis=1)
+
+        for i, label in enumerate(class_labels_pos):
+            if label != 2:
+                word = pos_arr[i]
+                del pos_dict[word]
+
+    if len(neg_arr) > 0:
+        neg_tokenized = tokenize_batch(neg_arr, tokenizer)
+        true_neg_label = model.predict(neg_tokenized)
+        class_labels_neg = np.argmax(true_neg_label, axis=1)
+
+        for i, label in enumerate(class_labels_neg):
+            if label != 0:
+                word = neg_arr[i]
+                del neg_dict[word]
+
+    return pos_dict, neg_dict
+
+
+""" VERTEX AI """
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "cloud_credentials\high-office-443111-t7-9d7551922c9f.json"
+
+def load_vertex_model():        
+    model = GenerativeModel(
+        "projects/813833490723/locations/us-central1/endpoints/1039637722085457920",
+    )
+
+    return model
+
+def limit_gen_ai_input():
+    pass
+
+def generate_resume(prompt, model):
+    chat = model.start_chat()
+    generation_config = {
+        "max_output_tokens": 2048,
+        "temperature": 0.8,
+        "top_p": 1,
+    }
+
+    safety_settings = [
+        SafetySetting(
+            category=SafetySetting.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+            threshold=SafetySetting.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE
+        ),
+        SafetySetting(
+            category=SafetySetting.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+            threshold=SafetySetting.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE
+        ),
+        SafetySetting(
+            category=SafetySetting.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+            threshold=SafetySetting.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE
+        ),
+        SafetySetting(
+            category=SafetySetting.HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold=SafetySetting.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE
+        ),
+    ]
+
+    response = chat.send_message(prompt, generation_config=generation_config, safety_settings=safety_settings)    
+    print("Response: ", response.text)
+
+
+
+    

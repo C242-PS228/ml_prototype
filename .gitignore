@@ -8,3 +8,4 @@ model
 venv
 stanza_models
 __pycache__
+cloud_credentials
