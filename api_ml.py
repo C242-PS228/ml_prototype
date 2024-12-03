@@ -11,6 +11,7 @@ tokenizer = utils.load_tokenizer("tokenizer")
 model = utils.load_nlp_model("model/bert_attention_v13.h5")
 question_model = utils.load_nlp_model("model/question_bert.h5")
 assistance_model = utils.load_nlp_model("model/assistance_bert_v2.h5")
+gen_ai_model = utils.load_vertex_model()
 
 nlp = utils.load_stanza_pipeline()
 
@@ -83,6 +84,10 @@ async def predict_sentiments(data: RequestBody):
     len_assistances = len(assistances_data)
     assistances_usernames_map = [{"username": a_usernames[i], "text": assistances_data[i]} for i in range(len_assistances)]
 
+    """ Vertex ai """
+    gen_ai_input = utils.create_gen_ai_input(texts)
+    resume_generated = utils.generate_resume(gen_ai_input, model=gen_ai_model)
+
     return {
         "data": {
             "positive": positive_count,
@@ -97,6 +102,7 @@ async def predict_sentiments(data: RequestBody):
                 "negative": negative_key_words
             },
             "questions": questions_usernames_map,
-            "assistances": assistances_usernames_map
+            "assistances": assistances_usernames_map,
+            "resume": resume_generated
         }
     }

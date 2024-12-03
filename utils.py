@@ -727,8 +727,25 @@ def load_vertex_model():
 
     return model
 
-def limit_gen_ai_input():
-    pass
+def create_gen_ai_input(texts_array): 
+    reduced_comments = []
+    for i, comment in enumerate(texts_array):
+        truncated_comment = comment
+        if len(comment) > 150:
+            truncated_comment = comment[:150]
+        reduced_comments.append(truncated_comment)
+
+    formatted_commment = ""
+    for i, comment in enumerate(reduced_comments):
+        if i != len(reduced_comments) - 1:
+            formatted_commment += comment + '\n' 
+        else:
+            formatted_commment += comment
+
+    if len(formatted_commment) > 8000:
+        formatted_commment = formatted_commment[:8000]
+
+    return formatted_commment
 
 def generate_resume(prompt, model):
     chat = model.start_chat()
@@ -760,6 +777,7 @@ def generate_resume(prompt, model):
     response = chat.send_message(prompt, generation_config=generation_config, safety_settings=safety_settings)    
     print("Response: ", response.text)
 
+    return response.text
 
 
     
