@@ -8,7 +8,7 @@ app = FastAPI()
 
 # Load the model, tokenizer, and NLP pipeline
 tokenizer = utils.load_tokenizer("tokenizer")
-model = utils.load_nlp_model("https://storage.googleapis.com/production_model_storage/perceivo_models/bert_attention_v11.h5")
+model = utils.load_nlp_model("model/bert_attention_v11.h5")
 question_model = utils.load_nlp_model("model/question_bert.h5")
 assistance_model = utils.load_nlp_model("model/assistance_bert_v2.h5")
 
