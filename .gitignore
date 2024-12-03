@@ -1,7 +1,6 @@
 sentiment_results.csv
 sentiment_results.xlsx
 model/
-main.py
 venv
 *.ipynb
 stanza_models
