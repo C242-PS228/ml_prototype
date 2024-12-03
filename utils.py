@@ -5,8 +5,10 @@ from transformers import AutoTokenizer
 from tensorflow.keras.models import load_model 
 from collections import Counter
 import stanza
+import os
 import re
 import pandas as pd
+import requests
 
 emoji_dict = {'😀': 'senyum',
  '😃': 'senyum',
@@ -249,6 +251,25 @@ adjectives = [
 
 
 """ DATA PREPROCESSING """
+def download_file_from_url(url, destination_path):
+    """Download a file from a URL and save it locally."""
+    response = requests.get(url)
+    with open(destination_path, "wb") as f:
+        f.write(response.content)
+
+def load_nlp_model_from_url(model_url: str, cache_dir: str = "/tmp"):
+    """Download and load a model from a Google Cloud Storage URL."""
+    model_filename = model_url.split("/")[-1]
+    local_model_path = os.path.join(cache_dir, model_filename)
+
+    # Download the model if it doesn't exist
+    if not os.path.exists(local_model_path):
+        download_file_from_url(model_url, local_model_path)
+
+    # Load model from local path
+    return load_model(local_model_path)
+
+
 
 def replace_emoji_with_word(text):
     for emoji, word in emoji_dict.items():
@@ -614,3 +635,18 @@ def predict_assistance_batch(texts, model, tokenizer, preprocess=True, treshold=
             class_labels.append(0)
             is_questions.append(question_labels[0])
     return is_questions, class_labels, predictions
+
+def load_tokenizer_from_folder(tokenizer_folder: str):
+    """
+    Load a tokenizer from a folder containing tokenizer files (e.g., tokenizer.json, vocab.json).
+
+    Args:
+        tokenizer_folder (str): Path to the folder containing tokenizer files.
+
+    Returns:
+        tokenizer: The loaded tokenizer object.
+    """
+    if not os.path.exists(tokenizer_folder):
+        raise ValueError(f"Tokenizer folder not found: {tokenizer_folder}")
+    
+    return AutoTokenizer.from_pretrained(tokenizer_folder)

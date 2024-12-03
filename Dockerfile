@@ -7,6 +7,8 @@ WORKDIR /app
 # Salin semua file proyek ke dalam container
 COPY . .
 
+RUN python -m pip install --upgrade pip
+
 # Install dependensi aplikasi
 RUN pip install --no-cache-dir -r requirements.txt
 
