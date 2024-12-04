@@ -269,7 +269,20 @@ def load_nlp_model_from_url(model_url: str, cache_dir: str = "/tmp"):
     # Load model from local path
     return load_model(local_model_path)
 
+def load_tokenizer_from_folder(tokenizer_folder: str):
+    """
+    Load a tokenizer from a folder containing tokenizer files (e.g., tokenizer.json, vocab.json).
 
+    Args:
+        tokenizer_folder (str): Path to the folder containing tokenizer files.
+
+    Returns:
+        tokenizer: The loaded tokenizer object.
+    """
+    if not os.path.exists(tokenizer_folder):
+        raise ValueError(f"Tokenizer folder not found: {tokenizer_folder}")
+    
+    return AutoTokenizer.from_pretrained(tokenizer_folder)
 
 def replace_emoji_with_word(text):
     for emoji, word in emoji_dict.items():
@@ -635,18 +648,3 @@ def predict_assistance_batch(texts, model, tokenizer, preprocess=True, treshold=
             class_labels.append(0)
             is_questions.append(question_labels[0])
     return is_questions, class_labels, predictions
-
-def load_tokenizer_from_folder(tokenizer_folder: str):
-    """
-    Load a tokenizer from a folder containing tokenizer files (e.g., tokenizer.json, vocab.json).
-
-    Args:
-        tokenizer_folder (str): Path to the folder containing tokenizer files.
-
-    Returns:
-        tokenizer: The loaded tokenizer object.
-    """
-    if not os.path.exists(tokenizer_folder):
-        raise ValueError(f"Tokenizer folder not found: {tokenizer_folder}")
-    
-    return AutoTokenizer.from_pretrained(tokenizer_folder)
