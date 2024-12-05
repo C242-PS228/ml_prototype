@@ -5,10 +5,10 @@ import utils
 # Load models and tools
 nlp = utils.load_stanza_pipeline()
 tokenizer = utils.load_tokenizer('tokenizer')
-model = utils.load_nlp_model("model/bert_attention_v13.h5")
+model = utils.load_nlp_model("model/bert_attention_v12.h5")
 question_model = utils.load_nlp_model("model/question_bert.h5")
 assistance_model = utils.load_nlp_model("model/assistance_bert.h5")
-gen_ai_model = utils.load_vertex_model()
+# gen_ai_model = utils.load_vertex_model()
 
 # OUTPUT
 def summarize_sentiments(sentiments):
@@ -105,17 +105,17 @@ with gr.Blocks() as sentiment_app:
         excel_path = create_excel_file(texts_list, sentiments)  
 
         # Vertex ai
-        gen_ai_input = utils.create_gen_ai_input(texts_list)
-        print(gen_ai_input)
-        resume_generated = utils.generate_resume(gen_ai_input, model=gen_ai_model)
+        # gen_ai_input = utils.create_gen_ai_input(texts_list)
+        # print(gen_ai_input)
+        # resume_generated = utils.generate_resume(gen_ai_input, model=gen_ai_model)
 
         
-        return pd.DataFrame({"Predicted Sentiment": sentiments, "Input Text": texts_list}), summary_text, top_com_pos_text, top_com_neg_text, top_3_pos_comments_text, top_3_neg_comments_text, questions_str, assistances_str, resume_generated, csv_path, excel_path
+        return pd.DataFrame({"Predicted Sentiment": sentiments, "Input Text": texts_list}), summary_text, top_com_pos_text, top_com_neg_text, top_3_pos_comments_text, top_3_neg_comments_text, questions_str, assistances_str, csv_path, excel_path
 
     submit_btn.click(
         fn=process_texts,
         inputs=input_texts,
-        outputs=[output_labels, summary_label, top_3_com_pos, top_3_com_neg, top_3_pos_comments_label, top_3_neg_comments_label, customer_questions, seek_assistance, resume_label, download_csv, download_excel],
+        outputs=[output_labels, summary_label, top_3_com_pos, top_3_com_neg, top_3_pos_comments_label, top_3_neg_comments_label, customer_questions, seek_assistance, download_csv, download_excel],
     )
 
 if __name__ == "__main__":
