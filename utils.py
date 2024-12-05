@@ -593,26 +593,26 @@ def get_key_words_and_clean_up(texts, class_labels, stanza, tokenizer, model, pr
                             neg_dict[word_text] = neg_dict.get(word_text, 0) + 1
 
 
-    pos_arr, neg_arr = get_array_words(pos_dict, neg_dict)
-    if len(pos_arr) > 0:
-        pos_tokenized = tokenize_batch(pos_arr, tokenizer)
-        true_pos_label = model.predict(pos_tokenized)
-        class_labels_pos = np.argmax(true_pos_label, axis=1)
+    # pos_arr, neg_arr = get_array_words(pos_dict, neg_dict)
+    # if len(pos_arr) > 0:
+    #     pos_tokenized = tokenize_batch(pos_arr, tokenizer)
+    #     true_pos_label = model.predict(pos_tokenized)
+    #     class_labels_pos = np.argmax(true_pos_label, axis=1)
 
-        for i, label in enumerate(class_labels_pos):
-            if label != 2:
-                word = pos_arr[i]
-                del pos_dict[word]
+    #     for i, label in enumerate(class_labels_pos):
+    #         if label != 2:
+    #             word = pos_arr[i]
+    #             del pos_dict[word]
 
-    if len(neg_arr) > 0:
-        neg_tokenized = tokenize_batch(neg_arr, tokenizer)
-        true_neg_label = model.predict(neg_tokenized)
-        class_labels_neg = np.argmax(true_neg_label, axis=1)
+    # if len(neg_arr) > 0:
+    #     neg_tokenized = tokenize_batch(neg_arr, tokenizer)
+    #     true_neg_label = model.predict(neg_tokenized)
+    #     class_labels_neg = np.argmax(true_neg_label, axis=1)
 
-        for i, label in enumerate(class_labels_neg):
-            if label != 0:
-                word = neg_arr[i]
-                del neg_dict[word]
+    #     for i, label in enumerate(class_labels_neg):
+    #         if label != 0:
+    #             word = neg_arr[i]
+    #             del neg_dict[word]
 
     return pos_dict, neg_dict
 
@@ -849,11 +849,13 @@ def get_key_words_and_clean_up_v2(preprocessed_texts, class_labels, stanza, toke
 
 """ VERTEX AI """
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "cloud_credentials\high-office-443111-t7-9d7551922c9f.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "cloud_credentials\c242-ps228-capstone-team-b04f8a78f4f7.json"
 
-def load_vertex_model():        
+def load_vertex_model():     
+    vertexai.init(project="132823030367", location="us-central1")
+   
     model = GenerativeModel(
-        "projects/813833490723/locations/us-central1/endpoints/1039637722085457920",
+        "projects/132823030367/locations/us-central1/endpoints/5514526901831467008",
     )
 
     return model

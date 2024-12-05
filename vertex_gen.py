@@ -3,7 +3,7 @@ import vertexai
 from vertexai.generative_models import GenerativeModel, SafetySetting, Part
 import os
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "cloud_credentials\high-office-443111-t7-9d7551922c9f.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "cloud_credentials\c242-ps228-capstone-team-b04f8a78f4f7.json"
 
 # vertexai.init(project="813833490723", location="us-central1")
 
@@ -11,10 +11,10 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "cloud_credentials\high-office-44
 #     "projects/813833490723/locations/us-central1/endpoints/540160375912398848",
 # )
 
-vertexai.init(project="813833490723", location="us-central1")
+vertexai.init(project="132823030367", location="us-central1")
 
 model = GenerativeModel(
-    "projects/813833490723/locations/us-central1/endpoints/1039637722085457920",
+    "projects/132823030367/locations/us-central1/endpoints/5514526901831467008",
 )
 
 chat = model.start_chat()
