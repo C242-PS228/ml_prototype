@@ -11,7 +11,7 @@ tokenizer = utils.load_tokenizer("tokenizer")
 model = utils.load_nlp_model("model/bert_attention_v12.h5")
 question_model = utils.load_nlp_model("model/question_bert.h5")
 assistance_model = utils.load_nlp_model("model/assistance_bert_v2.h5")
-gen_ai_model = utils.load_vertex_model()
+# gen_ai_model = utils.load_vertex_model()
 
 nlp = utils.load_stanza_pipeline()
 
@@ -38,7 +38,7 @@ async def predict_sentiments(data: RequestBody):
     if not texts:
         raise HTTPException(status_code=400, detail="All comments are null, empty, or missing text.")
 
-    preprocessed_texts = [utils.preprocess_text(text) for text in texts]
+    preprocessed_texts = [utils.preprocess_text_and_normalize(text) for text in texts]
 
     # print(preprocessed_texts)
     
@@ -62,18 +62,18 @@ async def predict_sentiments(data: RequestBody):
     # Analyze the most common positive and negative key_words
     # filtered_comments_keywords, filtered_class_labels = utils.limit_and_filter_comments_400(preprocessed_texts, class_labels=class_labels)
     filtered_comments_keywords, filtered_class_labels = utils.limit_and_filter_comments_400(texts, class_labels=class_labels)
-    liked_by_cust, disliked_by_cust = utils.get_key_words_and_clean_up(filtered_comments_keywords, filtered_class_labels, stanza=nlp, model=model, tokenizer=tokenizer, preprocess=True)
+    liked_by_cust, disliked_by_cust, pos_one_word, neg_one_word = utils.get_key_words_and_clean_up(filtered_comments_keywords, filtered_class_labels, stanza=nlp, model=model, tokenizer=tokenizer, preprocess=True)
 
     # liked_by_cust = utils.decode_emoji(liked_by_cust)
     # disliked_by_cust = utils.decode_emoji(disliked_by_cust)
 
-    # Convert key_words to the desired format
+    # # Convert key_words to the desired format
     positive_key_words = [{"tagname": tag, "value": count} for tag, count in liked_by_cust.items()]
     negative_key_words = [{"tagname": tag, "value": count} for tag, count in disliked_by_cust.items()]
 
     # Question
     netral_data = utils.get_netral_data(class_labels=class_labels, data=texts)
-    print(netral_data)
+    # print(netral_data)
     questions_data = []
     if len(netral_data) > 0:
         is_questions, question_class_labels, question_predictions = utils.predict_question_batch(netral_data, model=question_model, tokenizer=tokenizer, preprocess=True)
@@ -90,8 +90,8 @@ async def predict_sentiments(data: RequestBody):
     assistances_usernames_map = [{"username": a_usernames[i], "text": assistances_data[i]} for i in range(len_assistances)]
 
     """ Vertex ai """
-    gen_ai_input = utils.create_gen_ai_input(texts)
-    resume_generated = utils.generate_resume(gen_ai_input, model=gen_ai_model)
+    # gen_ai_input = utils.create_gen_ai_input(texts)
+    # resume_generated = utils.generate_resume(gen_ai_input, model=gen_ai_model)
 
     return {
         "data": {
@@ -104,10 +104,12 @@ async def predict_sentiments(data: RequestBody):
             },
             "key_words": {
                 "positive": positive_key_words,
-                "negative": negative_key_words
+                "negative": negative_key_words,
+                "graph_positive": pos_one_word,
+                "graph_negative": neg_one_word
             },
             "questions": questions_usernames_map,
             "assistances": assistances_usernames_map,
-            "resume": resume_generated
+            # "resume": resume_generated
         }
     }

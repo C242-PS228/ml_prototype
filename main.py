@@ -53,15 +53,15 @@ with gr.Blocks() as sentiment_app:
 
     def process_texts(texts):
         texts_list = texts.split("\n")  
-        preprocessed_texts = [utils.preprocess_text(text) for text in texts_list]
+        preprocessed_texts = [utils.preprocess_text_and_normalize(text) for text in texts_list]
         sentiments, class_labels, predictions = utils.predict_sentiment_batch(preprocessed_texts, model=model, tokenizer=tokenizer, preprocess=False)  
         summary = summarize_sentiments(sentiments)  
 
         # Key Words
-        filtered_comments_keywords, filtered_class_labels = utils.limit_and_filter_comments_400(preprocessed_texts, class_labels=class_labels)
-        print(f"woii {len(filtered_comments_keywords)}")
-        print(f"woii {len(filtered_class_labels)}")
-        top_com_pos_dict, top_com_neg_dict = utils.get_key_words_and_clean_up(filtered_comments_keywords, filtered_class_labels, stanza=nlp, tokenizer=tokenizer, model=model)
+        filtered_comments_keywords, filtered_class_labels = utils.limit_and_filter_comments_400(texts_list, class_labels=class_labels)
+        # print(f"woii {len(filtered_comments_keywords)}")
+        # print(f"woii {len(filtered_class_labels)}")
+        top_com_pos_dict, top_com_neg_dict = utils.get_key_words_and_clean_up(filtered_comments_keywords, filtered_class_labels, stanza=nlp, tokenizer=tokenizer, model=model, preprocess=True)
         top_com_pos_words, top_com_neg_words = [word for word, _ in top_com_pos_dict.items()], [word for word, _ in top_com_neg_dict.items()]
         # top_com_pos_words, top_com_neg_words = [], []
 

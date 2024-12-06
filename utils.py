@@ -332,24 +332,24 @@ text_to_emoji_dict = {'senyum': '😺',
  'berlutut': '🧎\u200d♂️\u200d➡️',
  'ronaldo': '🐐'}
 
-stop_words = ['dibuat', 'jawab', 'ibaratkan', 'lima', 'adanya', 'berawal', 'bertutur', 'keseluruhan', 'masihkah', 'hanyalah', 'tanyanya', 'sementara', 'bagi', 'meyakini', 'teringat', 'memintakan', 'sekali-kali', 'sebegitu', 'sebutnya', 'dikerjakan', 'pertama', 'sekaligus', 'menegaskan', 'mulanya', 'ingat-ingat', 'semua', 'kami', 'mulai', 'oleh', 'menunjuk', 'maupun', 'bagai', 'ibarat', 'sendirinya', 'bahkan', 'berikan', 'tengah', 'diberikan', 'keduanya', 'sering', 'ditunjukkan', 'berturut-turut', 'beginilah', 'memungkinkan', 'itukah', 'jangankan', 'dipersoalkan', 'nanti', 'sajalah', 'sudahkah', 'tiba', 'pula', 'ucapnya', 'memastikan', 'menunjukkan', 'sangat', 'sesaat', 'keinginan', 'tentunya', 'berlangsung', 'menunjuki', 'apaan', 'sela', 'bisa', 'menanti-nanti', 'apakah', 'semisalnya', 'memisalkan', 'beberapa', 'biasanya', 'bakal', 'disampaikan', 'wong', 'yakni', 'secara', 'semakin', 'akhirnya', 'bahwa', 'tentu', 'terjadinya', 'akhir', 'bagaimanakah', 'dirinya', 'kira', 'sekadarnya', 'kini', 'demi', 'bolehlah', 'lainnya', 'mampu', 'mempersiapkan', 'naik', 'memberi', 'jelaskan', 'akan', 'siap', 'sedang', 'bakalan', 'sebanyak', 'andalah', 'lebih', 'lanjutnya', 'demikianlah', 'semula', 'karena', 'selain', 'kala', 'seusai', 'perlu', 'balik', 'rasa', 'mempersoalkan', 'terkira', 'tunjuk', 'jumlah', 'berapa', 'kalaupun', 'segera', 'kalau', 'diketahuinya', 'sebaik', 'khususnya', 'beginian', 'antar', 'ibaratnya', 'tetap', 'kamulah', 'terlebih', 'boleh', 'menandaskan', 'soal', 'agar', 'lanjut', 'menghendaki', 'namun', 'sebenarnya', 'betul', 'hal', 'sudah', 'begitulah', 'begini', 'kira-kira', 'mendatang', 'memihak', 'mengingat', 'diucapkan', 'bulan', 'makanya', 'meski', 'rasanya', 'hingga', 'punya', 'entahlah', 'sedikit', 'berturut', 'semacam', 'berdatangan', 'dimintai', 'kan', 'lamanya', 'diperlukan', 'sekecil', 'semuanya', 'sama', 'ikut', 'atas', 'kelihatannya', 'dilalui', 'disebutkannya', 'kok', 'tadi', 'misal', 'toh', 'olehnya', 'sangatlah', 'pertama-tama', 'sebagainya', 'diantara', 'keluar', 'mungkinkah', 'sebut', 'dikira', 'bekerja', 'kebetulan', 'diungkapkan', 'terjadilah', 'terakhir', 'jikalau', 'seringnya', 'tanyakan', 'pentingnya', 'waktunya', 'ditandaskan', 'agak', 'bagaikan', 'per', 'betulkah', 'ditunjuk', 'jadilah', 'begitupun', 'dipergunakan', 'inginkah', 'mendatangkan', 'sebutlah', 'dialah', 'bertanya-tanya', 'mau', 'belumlah', 'cara', 'kapan', 'makin', 'semasa', 'menginginkan', 'janganlah', 'sebelumnya', 'ibu', 'mengatakannya', 'sampai', 'diinginkan', 'siapapun', 'berarti', 'belakangan', 'hari', 'akulah', 'bermaksud', 'saja', 'ungkap', 'pertanyaan', 'bapak', 'tuturnya', 'ujar', 'dimaksud', 'dimulailah', 'sebuah', 'seolah', 'dapat', 'percuma', 'kinilah', 'tiga', 'dimaksudkan', 'dijelaskannya', 'mula', 'ada', 'sedemikian', 'tertentu', 'pastilah', 'satu', 'setengah', 'meskipun', 'memerlukan', 'rata', 'macam', 'mempunyai', 'rupanya', 'asalkan', 'atau', 'sebesar', 'sepihak', 'untuk', 'di', 'semisal', 'mengibaratkannya', 'sebisanya', 'tahun', 'yakin', 'dekat', 'dimulainya', 'tandas', 'berlebihan', 'bersama-sama', 'ingin', 'perlukah', 'bung', 'mampukah', 'menyebutkan', 'paling', 'seketika', 'menyeluruh', 'semasih', 'aku', 'disinilah', 'seseorang', 'berkali-kali', 'dahulu', 'ia', 'ditegaskan', 'malahan', 'terdiri', 'antara', 'adapun', 'mengira', 'inginkan', 'sekadar', 'berapakah', 'bukanlah', 'selalu', 'ternyata', 'sudahlah', 'maka', 'mengungkapkan', 'setidaknya', 'entah', 'sehingga', 'memperlihatkan', 'tidakkah', 'diberi', 'tadinya', 'bukan', 'tanya', 'bagaimanapun', 'berakhir', 'berada', 'anda', 'bermacam', 'selanjutnya', 'tahu', 'memberikan', 'dijawab', 'datang', 'setibanya', 'sebegini', 'empat', 'dari', 'secukupnya', 'didatangkan', 'jadi', 'telah', 'sampai-sampai', 'masing', 'dia', 'berlalu', 'tiap', 'mulailah', 'diucapkannya', 'didapat', 'terutama', 'serta', 'jika', 'keadaan', 'se', 'sebagai', 'tambah', 'artinya', 'mengatakan', 'lagian', 'disini', 'mendatangi', 'caranya', 'yaitu', 'kemungkinan', 'menanyai', 'sebaik-baiknya', 'ditujukan', 'turut', 'menanyakan', 'sendirian', 'sebagaimana', 'tandasnya', 'mengetahui', 'tanpa', 'berkenaan', 'melihatnya', 'ini', 'apabila', 'misalkan', 'tersebutlah', 'dimisalkan', 'menjadi', 'sebaliknya', 'sekurangnya', 'menurut', 'ditanyakan', 'mengibaratkan', 'berbagai', 'ditunjuknya', 'tutur', 'menyatakan', 'diibaratkan', 'menanti', 'jumlahnya', 'sesampai', 'berikut', 'setidak-tidaknya', 'mengenai', 'menuju', 'luar', 'seorang', 'demikian', 'sempat', 'dimulai', 'menaiki', 'ataupun', 'bersiap-siap', 'katanya', 'bukannya', 'kata', 'malah', 'meminta', 'tempat', 'berapalah', 'itulah', 'bisakah', 'diperkirakan', 'mana', 'bahwasanya', 'merupakan', 'banyak', 'mempergunakan', 'sama-sama', 'dalam', 'memang', 'sebab', 'segalanya', 'bila', 'bersiap', 'tampaknya', 'serupa', 'sejauh', 'teringat-ingat', 'harusnya', 'sekitar', 'agaknya', 'hendaklah', 'sepantasnyalah', 'hampir', 'melalui', 'terhadapnya', 'sebetulnya', 'tersebut', 'soalnya', 'kelihatan', 'diantaranya', 'mengapa', 'dijelaskan', 'dikatakannya', 'haruslah', 'mengerjakan', 'seingat', 'diperbuat', 'terlihat', 'sebagian', 'semata', 'sekali', 'bolehkah', 'menggunakan', 'sepertinya', 'ketika', 'diperlihatkan', 'tersampaikan', 'nantinya', 'berjumlah', 'berupa', 'minta', 'nah', 'mengucapkan', 'asal', 'diperbuatnya', 'mungkin', 'dikarenakan', 'padanya', 'berikutnya', 'sesuatunya', 'dengan', 'sesudahnya', 'awal', 'begitukah', 'tepat', 'diibaratkannya', 'diri', 'selama-lamanya', 'tentulah', 'dimaksudkannya', 'melainkan', 'pun', 'tidaklah', 'kalaulah', 'mengucapkannya', 'antaranya', 'bukankah', 'ditunjukkannya', 'umumnya', 'kamu', 'diketahui', 'ditunjuki', 'berakhirlah', 'memperbuat', 'pantas', 'tentang', 'menuturkan', 'seberapa', 'kitalah', 'sebelum', 'bermula', 'biasa', 'mendapat', 'pihaknya', 'termasuk', 'gunakan', 'pukul', 'ditambahkan', 'beri', 'kesampaian', 'meyakinkan', 'para', 'inikah', 'sebaiknya', 'bagian', 'sekalian', 'kalian', 'membuat', 'dong', 'tegasnya', 'memulai', 'perlunya', 'dipunyai', 'diingatkan', 'dulu', 'katakan', 'ditanyai', 'jelaslah', 'kiranya', 'terjadi', 'kasus', 'ialah', 'depan', 'sekiranya', 'sewaktu', 'terhadap', 'menambahkan', 'jadinya', 'berapapun', 'segala', 'dituturkannya', 'pihak', 'sampaikan', 'sebabnya', 'melakukan', 'amatlah', 'pasti', 'dibuatnya', 'siapakah', 'tertuju', 'dilakukan', 'kenapa', 'setempat', 'usai', 'terlalu', 'dua', 'setelah', 'sendiri', 'diperlukannya', 'karenanya', 'menyampaikan', 'wah', 'nyaris', 'terbanyak', 'akhiri', 'benar', 'menjawab', 'bawah', 'siapa', 'kamilah', 'masa', 'kita', 'sedangkan', 'seharusnya', 'sinilah', 'ataukah', 'setiba', 'lain', 'ucap', 'masing-masing', 'ungkapnya', 'bersama', 'sejak', 'sana', 'waktu', 'dipastikan', 'tapi', 'wahai', 'waduh', 'ingat', 'diminta', 'menjelaskan', 'setinggi', 'beginikah', 'buat', 'saatnya', 'bermacam-macam', 'dini', 'awalnya', 'dilihat', 'setiap', 'kepadanya', 'terdahulu', 'kelima', 'masih', 'diingat', 'suatu', 'selamanya', 'lah', 'manalagi', 'tampak', 'sekalipun', 'tetapi', 'apatah', 'jawabnya', 'memperkirakan', 'harus', 'pertanyakan', 'itu', 'terdapat', 'saling', 'diakhirinya', 'kembali', 'nyatanya', 'seperlunya', 'tambahnya', 'dan', 'dipertanyakan', 'kapanpun', 'sesegera', 'mengingatkan', 'lagi', 'disebut', 'sambil', 'katakanlah', 'justru', 'sepantasnya', 'keseluruhannya', 'menyiapkan', 'tiba-tiba', 'sini', 'saat', 'kepada', 'manakala', 'berkata', 'selama', 'disebutkan', 'kapankah', 'hendaknya', 'kemudian', 'seluruhnya', 'bagaimana', 'sepanjang', 'padahal', 'melihat', 'walaupun', 'semata-mata', 'seluruh', 'pernah', 'amat', 'diberikannya', 'begitu', 'tegas', 'terasa', 'inilah', 'hanya', 'pada', 'benarlah', 'berakhirnya', 'cuma', 'jelasnya', 'dikatakan', 'sedikitnya', 'seterusnya', 'mendapatkan', 'mengakhiri', 'sesekali', 'sejumlah', 'bilakah', 'masalahnya', 'jawaban', 'sesuatu', 'sesudah', 'misalnya', 'apalagi', 'bertanya', 'terus', 'digunakan', 'selaku', 'menantikan', 'sekarang', 'sayalah', 'mereka', 'pak', 'menanya', 'apa', 'lalu', 'berkehendak', 'juga', 'kemungkinannya', 'ujarnya', 'masalah', 'adalah', 'akankah', 'ditanya', 'sekurang-kurangnya', 'supaya', 'saya', 'seperti', 'yang', 'semampu', 'berkeinginan', 'sekitarnya', 'daripada', 'hendak', 'merekalah', 'ke', 'berujar', 'merasa', 'dimaksudnya', 'semampunya', 'walau', 'usah', 'baru', 'kedua', 'lewat', 'diakhiri', 'sejenak', 'dimungkinkan', 'dituturkan', 'berlainan', 'persoalan', 'menunjuknya', 'menyangkut', 'belakang', 'sesama', 'mempertanyakan', 'benarkah', 'seolah-olah', 'jangan']
+stop_words = {'dibuat', 'jawab', 'ibaratkan', 'lima', 'adanya', 'berawal', 'bertutur', 'keseluruhan', 'masihkah', 'hanyalah', 'tanyanya', 'sementara', 'bagi', 'meyakini', 'teringat', 'memintakan', 'sekali-kali', 'sebegitu', 'sebutnya', 'dikerjakan', 'pertama', 'sekaligus', 'menegaskan', 'mulanya', 'ingat-ingat', 'semua', 'kami', 'mulai', 'oleh', 'menunjuk', 'maupun', 'bagai', 'ibarat', 'sendirinya', 'bahkan', 'berikan', 'tengah', 'diberikan', 'keduanya', 'sering', 'ditunjukkan', 'berturut-turut', 'beginilah', 'memungkinkan', 'itukah', 'jangankan', 'dipersoalkan', 'nanti', 'sajalah', 'sudahkah', 'tiba', 'pula', 'ucapnya', 'memastikan', 'menunjukkan', 'sangat', 'sesaat', 'keinginan', 'tentunya', 'berlangsung', 'menunjuki', 'apaan', 'sela', 'bisa', 'menanti-nanti', 'apakah', 'semisalnya', 'memisalkan', 'beberapa', 'biasanya', 'bakal', 'disampaikan', 'wong', 'yakni', 'secara', 'semakin', 'akhirnya', 'bahwa', 'tentu', 'terjadinya', 'akhir', 'bagaimanakah', 'dirinya', 'kira', 'sekadarnya', 'kini', 'demi', 'bolehlah', 'lainnya', 'mampu', 'mempersiapkan', 'naik', 'memberi', 'jelaskan', 'akan', 'siap', 'sedang', 'bakalan', 'sebanyak', 'andalah', 'lebih', 'lanjutnya', 'demikianlah', 'semula', 'karena', 'selain', 'kala', 'seusai', 'perlu', 'balik', 'rasa', 'mempersoalkan', 'terkira', 'tunjuk', 'jumlah', 'berapa', 'kalaupun', 'segera', 'kalau', 'diketahuinya', 'sebaik', 'khususnya', 'beginian', 'antar', 'ibaratnya', 'tetap', 'kamulah', 'terlebih', 'boleh', 'menandaskan', 'soal', 'agar', 'lanjut', 'menghendaki', 'namun', 'sebenarnya', 'betul', 'hal', 'sudah', 'begitulah', 'begini', 'kira-kira', 'mendatang', 'memihak', 'mengingat', 'diucapkan', 'bulan', 'makanya', 'meski', 'rasanya', 'hingga', 'punya', 'entahlah', 'sedikit', 'berturut', 'semacam', 'berdatangan', 'dimintai', 'kan', 'lamanya', 'diperlukan', 'sekecil', 'semuanya', 'sama', 'ikut', 'atas', 'kelihatannya', 'dilalui', 'disebutkannya', 'kok', 'tadi', 'misal', 'toh', 'olehnya', 'sangatlah', 'pertama-tama', 'sebagainya', 'diantara', 'keluar', 'mungkinkah', 'sebut', 'dikira', 'bekerja', 'kebetulan', 'diungkapkan', 'terjadilah', 'terakhir', 'jikalau', 'seringnya', 'tanyakan', 'pentingnya', 'waktunya', 'ditandaskan', 'agak', 'bagaikan', 'per', 'betulkah', 'ditunjuk', 'jadilah', 'begitupun', 'dipergunakan', 'inginkah', 'mendatangkan', 'sebutlah', 'dialah', 'bertanya-tanya', 'mau', 'belumlah', 'cara', 'kapan', 'makin', 'semasa', 'menginginkan', 'janganlah', 'sebelumnya', 'ibu', 'mengatakannya', 'sampai', 'diinginkan', 'siapapun', 'berarti', 'belakangan', 'hari', 'akulah', 'bermaksud', 'saja', 'ungkap', 'pertanyaan', 'bapak', 'tuturnya', 'ujar', 'dimaksud', 'dimulailah', 'sebuah', 'seolah', 'dapat', 'percuma', 'kinilah', 'tiga', 'dimaksudkan', 'dijelaskannya', 'mula', 'ada', 'sedemikian', 'tertentu', 'pastilah', 'satu', 'setengah', 'meskipun', 'memerlukan', 'rata', 'macam', 'mempunyai', 'rupanya', 'asalkan', 'atau', 'sebesar', 'sepihak', 'untuk', 'di', 'semisal', 'mengibaratkannya', 'sebisanya', 'tahun', 'yakin', 'dekat', 'dimulainya', 'tandas', 'berlebihan', 'bersama-sama', 'ingin', 'perlukah', 'bung', 'mampukah', 'menyebutkan', 'paling', 'seketika', 'menyeluruh', 'semasih', 'aku', 'disinilah', 'seseorang', 'berkali-kali', 'dahulu', 'ia', 'ditegaskan', 'malahan', 'terdiri', 'antara', 'adapun', 'mengira', 'inginkan', 'sekadar', 'berapakah', 'bukanlah', 'selalu', 'ternyata', 'sudahlah', 'maka', 'mengungkapkan', 'setidaknya', 'entah', 'sehingga', 'memperlihatkan', 'tidakkah', 'diberi', 'tadinya', 'bukan', 'tanya', 'bagaimanapun', 'berakhir', 'berada', 'anda', 'bermacam', 'selanjutnya', 'tahu', 'memberikan', 'dijawab', 'datang', 'setibanya', 'sebegini', 'empat', 'dari', 'secukupnya', 'didatangkan', 'jadi', 'telah', 'sampai-sampai', 'masing', 'dia', 'berlalu', 'tiap', 'mulailah', 'diucapkannya', 'didapat', 'terutama', 'serta', 'jika', 'keadaan', 'se', 'sebagai', 'tambah', 'artinya', 'mengatakan', 'lagian', 'disini', 'mendatangi', 'caranya', 'yaitu', 'kemungkinan', 'menanyai', 'sebaik-baiknya', 'ditujukan', 'turut', 'menanyakan', 'sendirian', 'sebagaimana', 'tandasnya', 'mengetahui', 'tanpa', 'berkenaan', 'melihatnya', 'ini', 'apabila', 'misalkan', 'tersebutlah', 'dimisalkan', 'menjadi', 'sebaliknya', 'sekurangnya', 'menurut', 'ditanyakan', 'mengibaratkan', 'berbagai', 'ditunjuknya', 'tutur', 'menyatakan', 'diibaratkan', 'menanti', 'jumlahnya', 'sesampai', 'berikut', 'setidak-tidaknya', 'mengenai', 'menuju', 'luar', 'seorang', 'demikian', 'sempat', 'dimulai', 'menaiki', 'ataupun', 'bersiap-siap', 'katanya', 'bukannya', 'kata', 'malah', 'meminta', 'tempat', 'berapalah', 'itulah', 'bisakah', 'diperkirakan', 'mana', 'bahwasanya', 'merupakan', 'banyak', 'mempergunakan', 'sama-sama', 'dalam', 'memang', 'sebab', 'segalanya', 'bila', 'bersiap', 'tampaknya', 'serupa', 'sejauh', 'teringat-ingat', 'harusnya', 'sekitar', 'agaknya', 'hendaklah', 'sepantasnyalah', 'hampir', 'melalui', 'terhadapnya', 'sebetulnya', 'tersebut', 'soalnya', 'kelihatan', 'diantaranya', 'mengapa', 'dijelaskan', 'dikatakannya', 'haruslah', 'mengerjakan', 'seingat', 'diperbuat', 'terlihat', 'sebagian', 'semata', 'sekali', 'bolehkah', 'menggunakan', 'sepertinya', 'ketika', 'diperlihatkan', 'tersampaikan', 'nantinya', 'berjumlah', 'berupa', 'minta', 'nah', 'mengucapkan', 'asal', 'diperbuatnya', 'mungkin', 'dikarenakan', 'padanya', 'berikutnya', 'sesuatunya', 'dengan', 'sesudahnya', 'awal', 'begitukah', 'tepat', 'diibaratkannya', 'diri', 'selama-lamanya', 'tentulah', 'dimaksudkannya', 'melainkan', 'pun', 'tidaklah', 'kalaulah', 'mengucapkannya', 'antaranya', 'bukankah', 'ditunjukkannya', 'umumnya', 'kamu', 'diketahui', 'ditunjuki', 'berakhirlah', 'memperbuat', 'pantas', 'tentang', 'menuturkan', 'seberapa', 'kitalah', 'sebelum', 'bermula', 'biasa', 'mendapat', 'pihaknya', 'termasuk', 'gunakan', 'pukul', 'ditambahkan', 'beri', 'kesampaian', 'meyakinkan', 'para', 'inikah', 'sebaiknya', 'bagian', 'sekalian', 'kalian', 'membuat', 'dong', 'tegasnya', 'memulai', 'perlunya', 'dipunyai', 'diingatkan', 'dulu', 'katakan', 'ditanyai', 'jelaslah', 'kiranya', 'terjadi', 'kasus', 'ialah', 'depan', 'sekiranya', 'sewaktu', 'terhadap', 'menambahkan', 'jadinya', 'berapapun', 'segala', 'dituturkannya', 'pihak', 'sampaikan', 'sebabnya', 'melakukan', 'amatlah', 'pasti', 'dibuatnya', 'siapakah', 'tertuju', 'dilakukan', 'kenapa', 'setempat', 'usai', 'terlalu', 'dua', 'setelah', 'sendiri', 'diperlukannya', 'karenanya', 'menyampaikan', 'wah', 'nyaris', 'terbanyak', 'akhiri', 'benar', 'menjawab', 'bawah', 'siapa', 'kamilah', 'masa', 'kita', 'sedangkan', 'seharusnya', 'sinilah', 'ataukah', 'setiba', 'lain', 'ucap', 'masing-masing', 'ungkapnya', 'bersama', 'sejak', 'sana', 'waktu', 'dipastikan', 'tapi', 'wahai', 'waduh', 'ingat', 'diminta', 'menjelaskan', 'setinggi', 'beginikah', 'buat', 'saatnya', 'bermacam-macam', 'dini', 'awalnya', 'dilihat', 'setiap', 'kepadanya', 'terdahulu', 'kelima', 'masih', 'diingat', 'suatu', 'selamanya', 'lah', 'manalagi', 'tampak', 'sekalipun', 'tetapi', 'apatah', 'jawabnya', 'memperkirakan', 'harus', 'pertanyakan', 'itu', 'terdapat', 'saling', 'diakhirinya', 'kembali', 'nyatanya', 'seperlunya', 'tambahnya', 'dan', 'dipertanyakan', 'kapanpun', 'sesegera', 'mengingatkan', 'lagi', 'disebut', 'sambil', 'katakanlah', 'justru', 'sepantasnya', 'keseluruhannya', 'menyiapkan', 'tiba-tiba', 'sini', 'saat', 'kepada', 'manakala', 'berkata', 'selama', 'disebutkan', 'kapankah', 'hendaknya', 'kemudian', 'seluruhnya', 'bagaimana', 'sepanjang', 'padahal', 'melihat', 'walaupun', 'semata-mata', 'seluruh', 'pernah', 'amat', 'diberikannya', 'begitu', 'tegas', 'terasa', 'inilah', 'hanya', 'pada', 'benarlah', 'berakhirnya', 'cuma', 'jelasnya', 'dikatakan', 'sedikitnya', 'seterusnya', 'mendapatkan', 'mengakhiri', 'sesekali', 'sejumlah', 'bilakah', 'masalahnya', 'jawaban', 'sesuatu', 'sesudah', 'misalnya', 'apalagi', 'bertanya', 'terus', 'digunakan', 'selaku', 'menantikan', 'sekarang', 'sayalah', 'mereka', 'pak', 'menanya', 'apa', 'lalu', 'berkehendak', 'juga', 'kemungkinannya', 'ujarnya', 'masalah', 'adalah', 'akankah', 'ditanya', 'sekurang-kurangnya', 'supaya', 'saya', 'seperti', 'yang', 'semampu', 'berkeinginan', 'sekitarnya', 'daripada', 'hendak', 'merekalah', 'ke', 'berujar', 'merasa', 'dimaksudnya', 'semampunya', 'walau', 'usah', 'baru', 'kedua', 'lewat', 'diakhiri', 'sejenak', 'dimungkinkan', 'dituturkan', 'berlainan', 'persoalan', 'menunjuknya', 'menyangkut', 'belakang', 'sesama', 'mempertanyakan', 'benarkah', 'seolah-olah', 'jangan'}
 
-nouns = [
+nouns = {
     "taste", "flavor", "portion", "service", "price","staff", "menu", "cheese", "topping", "crust", "quality", 
     "size", "material", "design", "style", "customer service", "delivery", "battery", "support", "product", "experience", "complaint", "order", "shipping", "response", "issue", 'cs',
     'ga', 'ngga', 'nggak', 'bumbu', 'quality', 'control'
-]
+}
 
-exclude_words = ['gua', 'kak', 'gue', 'sih', 'kasih', 'banget', 'orang', 'bu', 'sumpah', 'gitu', 'bnyak', 'banyak', 'gt', 'gitu', 'duo', 'dua', 'satu', 'min', 'pesen', 'brp', 'berapa','memang', 'mmg', 'udh', 'udah', 'uda', 'niat', 'tp', 'tapi', 'a', 'i', 'u', 'e', 'o']
-exclude_nouns = ['beban', 'nakal', 'a', 'e', 'biar', 'dpt']
+exclude_words = {'gua', 'kak', 'gue', 'sih', 'kasih', 'banget', 'orang', 'bu', 'sumpah', 'gitu', 'bnyak', 'banyak', 'gt', 'gitu', 'duo', 'dua', 'satu', 'min', 'pesen', 'brp', 'berapa','memang', 'mmg', 'udh', 'udah', 'uda', 'niat', 'tp', 'tapi', 'a', 'i', 'u', 'e', 'o', 'emang', 'emg', 'emng', 'bner', 'bnr', 'plis', 'pls', 'gara'}
+exclude_nouns = {'beban', 'nakal', 'biar', 'dpt', 'masih', 'msh', 'mash', 'lu', 'kamu', 'kmu', 'lo', 'nih', 'ni'}
 
-adjectives = [
+adjectives = {
     "fresh", "sweet", "spicy", "bland", "cold", 
     "hot", "overpriced", "quick", "trendy", "comfortable", "stylish", "soft", "cheap", "fast", "reliable", "innovative", "responsive", "friendly", "helpful", "unprofessional", 'professional', 
-    "amazing", "terrible", "good", "bad", "cozy", "comfy", 'cakep', 'keren', 'gokil', 'beban', 'nakal', 'quality', 'control'
-]
+    "amazing", "terrible", "good", "bad", "cozy", "comfy", 'cakep', 'keren', 'gokil', 'beban', 'nakal', 'quality', 'control', 'bau', 'basi'
+}
 
-negations = ['ga', 'gak', 'gada', 'nggak', 'enggak', 'tidak', 'ngga', 'gakk']
+negations = {'ga', 'gak', 'gada', 'nggak', 'enggak', 'tidak', 'ngga', 'gakk', 'nggk'}
 
 # include_words = 
 
@@ -382,7 +382,30 @@ def delete_emojis_from_dict(text):
         text = re.sub(re.escape(emoji), "", text)
     return text.strip()
 
-def preprocess_text_delete_emoji(text):
+def normalize_text(sentence):
+
+    exclude_words = ['maaf', 'ganggu', 'pinggang', 'bangga', 'canggung', 'enggak', 'ngga', 'nggak', 'enggan', 'genggam', 'hingga', 'inggris', 'jingga', 'perunggu', 'ringgit', 'sehingga', 'tinggi', 'serangga', 'tangga', 'tanggap', 'tinggal', 'tanggal', 'anggun', 'app', 'booking', 'cheese', 'coffee', 'pizza', 'kiss', 'kesukaan', 'pelangaan']
+    # Split the sentence into words
+    words = sentence.split()
+
+    # Normalize each word in the sentence
+    normalized_words = []
+    for word in words:
+        if word.lower() in exclude_words:
+            normalized_words.append(word)
+        else:
+            # Restore the excluded patterns that were masked
+            # Step 1: Normalize repeated characters except 'a' and 'g'
+            normalized_word = re.sub(r'([^agAGzZfF])\1+', r'\1', word)
+
+            # Step 2: Remove repeated 'a' or 'g' at the end, but keep single occurrences
+            normalized_word = re.sub(r'([agAGzZ])\1+\Z', r'\1', normalized_word)
+            normalized_words.append(normalized_word)
+
+    # Join the normalized words back into a sentence
+    return ' '.join(normalized_words)
+
+def preprocess_text_delete_emoji_and_normalize(text):
     text = text.lower()
     text = delete_emojis_from_dict(text)
     text = re.sub(r'@\w+', '', text).strip()
@@ -390,6 +413,18 @@ def preprocess_text_delete_emoji(text):
     text = re.sub(r'[^\w\s]', '', text)
     text = text.strip()
     text = stop_words_removal_question(text)
+    text = normalize_text(text)
+    return text
+
+def preprocess_text_and_normalize(text):
+    text = text.lower()
+    text = replace_emoji_with_word(text)
+    text = re.sub(r'@\w+', '', text).strip()
+    text = re.sub(r'\d+', '', text)
+    text = re.sub(r'[^\w\s]', '', text)
+    text = text.strip()
+    text = stop_words_removal_question(text)
+    text = normalize_text(text)
     return text
 
 
@@ -503,119 +538,126 @@ def analyze_sentiment(preprocessed_texts, class_labels, stanza):
     
     return pos_common_words, neg_common_words
 
-def get_key_words(preprocessed_texts, class_labels, stanza):
-    nlp = stanza
-    pos_dict = {}
-    neg_dict = {}
+from collections import defaultdict
+from itertools import islice
 
-    for text, label in zip(preprocessed_texts, class_labels):
-        previous_noun = None
-        doc = nlp(text)
-
-        for sent in doc.sentences:
-            for word in sent.words:
-                word_text = word.text
-
-                if word_text in exclude_words:
-                    previous_noun = None
-                    continue
-
-                # Handle nouns
-                if word.upos == "NOUN" or word_text in nouns:
-                    previous_noun = word_text
-                     # Standalone nouns
-                    if label == 2:
-                        pos_dict[word_text] = pos_dict.get(word_text, 0) + 1
-                    elif label == 0:
-                        neg_dict[word_text] = neg_dict.get(word_text, 0) + 1
-
-                # Handle adjectives with or without nouns
-                elif word.upos == "ADJ" or word_text in adjectives:
-                    if previous_noun:
-                        # Noun-adjective phrase
-                        phrase = f"{previous_noun} {word_text}"
-                        if label == 2:
-                            pos_dict[phrase] = pos_dict.get(phrase, 0) + 1
-                        elif label == 0:
-                            neg_dict[phrase] = neg_dict.get(phrase, 0) + 1
-                        previous_noun = None
-                    else:
-                        # Standalone adjective
-                        if label == 2:
-                            pos_dict[word_text] = pos_dict.get(word_text, 0) + 1
-                        elif label == 0:
-                            neg_dict[word_text] = neg_dict.get(word_text, 0) + 1
-
-    return pos_dict, neg_dict
 
 def get_key_words_and_clean_up(texts, class_labels, stanza, tokenizer, model, preprocess=False):
     if preprocess:
-        texts = [preprocess_text_delete_emoji(text) for text in texts]
-
-    print(f"wpooo {texts}")
+        texts = [preprocess_text_delete_emoji_and_normalize(text) for text in texts]
+    print(texts)
     nlp = stanza
-    pos_dict = {}
-    neg_dict = {}
+    pos_dict = defaultdict(int)
+    neg_dict = defaultdict(int)
+    pos_nouns_adjs = defaultdict(int)
+    neg_nouns_adjs = defaultdict(int)
+    pos_negations = defaultdict(int)
+    neg_negations = defaultdict(int)
 
+    res_adjectives = set()
+    res_nouns = set()
+    
     for text, label in zip(texts, class_labels):
         previous_noun = None
+        previous_negation = None  # Track negations
         doc = nlp(text)
 
         for sent in doc.sentences:
             for word in sent.words:
-                word_text = word.text
+                word_text = word.text.lower()
+                if len(word_text) == 1:
+                    continue 
 
                 word_text = re.sub(r'ny[ae]*$', '', word_text, flags=re.IGNORECASE)
 
-
-                if word_text in exclude_words:
+                if word_text in exclude_words or word_text in exclude_nouns:
                     previous_noun = None
+                    previous_negation = None
                     continue
-
-                # Handle nouns
-                if word.upos == "NOUN" or word_text in nouns:
-                    previous_noun = word_text
                 
+                if word_text in negations:
+                    # If negation is found, store it to pair with an adjective later
+                    previous_negation = word_text
+
                 elif word.upos == "ADJ" or word_text in adjectives:
-                    if previous_noun:
+                    if previous_negation:
+                        # Negation-adjective phrase
+                        neg_phrase = f"{previous_negation} {word_text}"
+                        if label == 2:
+                            pos_negations[neg_phrase] += 1
+                        elif label == 0:
+                            neg_negations[neg_phrase] += 1
+                        previous_negation = None  # Reset negation after pairing
+                        
+                    elif previous_noun:
                         # Noun-adjective phrase
                         phrase = f"{previous_noun} {word_text}"
                         if label == 2:
-                            pos_dict[phrase] = pos_dict.get(phrase, 0) + 1
+                            pos_dict[phrase] += 1
+                            pos_nouns_adjs[previous_noun] += 1
+                            pos_nouns_adjs[word_text] += 1
                         elif label == 0:
-                            neg_dict[phrase] = neg_dict.get(phrase, 0) + 1
+                            neg_dict[phrase] += 1
+                            neg_nouns_adjs[previous_noun] += 1
+                            neg_nouns_adjs[word_text] += 1
                         previous_noun = None
                     else:
                         # Standalone adjective
+                        res_adjectives.add(word_text)
                         if label == 2:
-                            pos_dict[word_text] = pos_dict.get(word_text, 0) + 1
+                            pos_dict[word_text] += 1
+                            pos_nouns_adjs[word_text] += 1
                         elif label == 0:
-                            neg_dict[word_text] = neg_dict.get(word_text, 0) + 1
+                            neg_dict[word_text] += 1
+                            neg_nouns_adjs[word_text] += 1
 
 
-    # pos_arr, neg_arr = get_array_words(pos_dict, neg_dict)
-    # if len(pos_arr) > 0:
-    #     pos_tokenized = tokenize_batch(pos_arr, tokenizer)
-    #     true_pos_label = model.predict(pos_tokenized)
-    #     class_labels_pos = np.argmax(true_pos_label, axis=1)
+                elif word.upos == "NOUN" or word_text in nouns:
+                    previous_noun = word_text
+                    if label == 2:
+                        pos_nouns_adjs[word_text] += 1
+                    elif label == 0:
+                        neg_nouns_adjs[word_text] += 1
 
-    #     for i, label in enumerate(class_labels_pos):
-    #         if label != 2:
-    #             word = pos_arr[i]
-    #             del pos_dict[word]
+    # Filter using your model predictions for better quality
+    pos_arr, neg_arr = get_array_words(pos_dict, neg_dict)
+    pos_dict = filter_with_model(pos_arr, pos_dict, tokenizer, model, label=2)
+    neg_dict = filter_with_model(neg_arr, neg_dict, tokenizer, model, label=0)
 
-    # if len(neg_arr) > 0:
-    #     neg_tokenized = tokenize_batch(neg_arr, tokenizer)
-    #     true_neg_label = model.predict(neg_tokenized)
-    #     class_labels_neg = np.argmax(true_neg_label, axis=1)
+    pos_nouns_adjs.update(pos_negations)
+    neg_nouns_adjs.update(neg_negations)
 
-    #     for i, label in enumerate(class_labels_neg):
-    #         if label != 0:
-    #             word = neg_arr[i]
-    #             del neg_dict[word]
+    def custom_sort(item):
+        key, count = item
+        is_adj = key in res_adjectives
+        return (-count, not is_adj)  # Prioritize high count, then adjectives
 
-    return pos_dict, neg_dict
+    # Update sorting logic for pos_nouns_adjs and neg_nouns_adjs
+    pos_nouns_adjs = dict(sorted(pos_nouns_adjs.items(), key=lambda item: custom_sort(item)))
+    neg_nouns_adjs = dict(sorted(neg_nouns_adjs.items(), key=lambda item: custom_sort(item)))
 
+    if len(pos_nouns_adjs) > 15:
+        pos_nouns_adjs = dict(islice(pos_nouns_adjs.items(), 15))  
+    if len(neg_nouns_adjs) > 15:
+        neg_nouns_adjs = dict(islice(neg_nouns_adjs.items(), 15))  
+
+    return pos_dict, neg_dict, pos_nouns_adjs, neg_nouns_adjs
+
+def filter_with_model(arr, word_dict, tokenizer, model, label):
+    if len(arr) > 0:
+        tokenized = tokenize_batch(arr, tokenizer)
+        predictions = model.predict(tokenized)
+        class_labels = np.argmax(predictions, axis=1)
+
+        for i, pred_label in enumerate(class_labels):
+            if pred_label != label:
+                word = arr[i]
+                del word_dict[word]
+    return word_dict
+
+
+# def process_key_words(pos_dict, neg_dict):
+#     for (noun, adj), count in pos_dict:
 
 
 def get_array_words(pos_common_words, neg_common_words):
@@ -790,63 +832,6 @@ def limit_and_filter_comments_400(texts, class_labels):
     return list(reduced_comments), list(new_class_labels)
 
 
-def get_key_words_and_clean_up_v2(preprocessed_texts, class_labels, stanza, tokenizer, model):
-    nlp = stanza
-    pos_dict = {}
-    neg_dict = {}
-
-
-    for text, label in zip(preprocessed_texts, class_labels):
-        doc = nlp(text)
-
-        for sent in doc.sentences:
-            for word in sent.words:
-                # Filter based on dependency and POS
-                if word.deprel == "amod" and len(word.text) > 2:
-                    head_word = sent.words[word.head - 1]
-                    if head_word.upos == "NOUN" and len(head_word.text) > 2:
-                        noun = head_word.text.lower()
-                        adj = word.text.lower()
-
-                        # Skip if either adjective or noun is in custom stopwords
-                        if noun in exclude_nouns or adj in exclude_nouns:
-                            continue
-
-                        # Form the phrase and count
-                        phrase = f"{noun} {adj}"
-                        if label == 2:  # Positive
-                            pos_dict[phrase] = pos_dict.get(phrase, 0) + 1
-                        elif label == 0:  # Negative
-                            neg_dict[phrase] = neg_dict.get(phrase, 0) + 1
-
-    # Apply frequency threshold filter: keep phrases appearing more than once
-    pos_dict = {k: v for k, v in pos_dict.items() if v > 1}
-    neg_dict = {k: v for k, v in neg_dict.items() if v > 1}
-
-    pos_arr, neg_arr = get_tag_words(pos_dict, neg_dict)
-    if len(pos_arr) > 0:
-        pos_tokenized = tokenize_batch(pos_arr, tokenizer)
-        true_pos_label = model.predict(pos_tokenized)
-        class_labels_pos = np.argmax(true_pos_label, axis=1)
-
-        for i, label in enumerate(class_labels_pos):
-            if label != 2:
-                word = pos_arr[i]
-                del pos_dict[word]
-
-    if len(neg_arr) > 0:
-        neg_tokenized = tokenize_batch(neg_arr, tokenizer)
-        true_neg_label = model.predict(neg_tokenized)
-        class_labels_neg = np.argmax(true_neg_label, axis=1)
-
-        for i, label in enumerate(class_labels_neg):
-            if label != 0:
-                word = neg_arr[i]
-                del neg_dict[word]
-
-    return pos_dict, neg_dict
-
-
 """ VERTEX AI """
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "cloud_credentials\c242-ps228-capstone-team-b04f8a78f4f7.json"
@@ -891,19 +876,19 @@ def generate_resume(prompt, model):
     safety_settings = [
         SafetySetting(
             category=SafetySetting.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-            threshold=SafetySetting.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE
+            threshold=SafetySetting.HarmBlockThreshold.BLOCK_HIGH_AND_ABOVE
         ),
         SafetySetting(
             category=SafetySetting.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-            threshold=SafetySetting.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE
+            threshold=SafetySetting.HarmBlockThreshold.BLOCK_HIGH_AND_ABOVE
         ),
         SafetySetting(
             category=SafetySetting.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-            threshold=SafetySetting.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE
+            threshold=SafetySetting.HarmBlockThreshold.BLOCK_HIGH_AND_ABOVE
         ),
         SafetySetting(
             category=SafetySetting.HarmCategory.HARM_CATEGORY_HARASSMENT,
-            threshold=SafetySetting.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE
+            threshold=SafetySetting.HarmBlockThreshold.BLOCK_HIGH_AND_ABOVE
         ),
     ]
 
