@@ -849,7 +849,7 @@ def get_key_words_and_clean_up_v2(preprocessed_texts, class_labels, stanza, toke
 
 """ VERTEX AI """
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "cloud_credentials\c242-ps228-capstone-team-b04f8a78f4f7.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "cloud_credentials/c242-ps228-capstone-team-b04f8a78f4f7.json"
 
 def load_vertex_model():     
     vertexai.init(project="132823030367", location="us-central1")
