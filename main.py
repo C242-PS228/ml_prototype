@@ -38,7 +38,7 @@ async def predict_sentiments(data: RequestBody):
     if not texts:
         raise HTTPException(status_code=400, detail="All comments are null, empty, or missing text.")
 
-    preprocessed_texts = [utils.preprocess_text(text) for text in texts]
+    preprocessed_texts = [utils.preprocess_text_and_normalize(text) for text in texts]
 
     # print(preprocessed_texts)
     
@@ -62,18 +62,20 @@ async def predict_sentiments(data: RequestBody):
     # Analyze the most common positive and negative key_words
     # filtered_comments_keywords, filtered_class_labels = utils.limit_and_filter_comments_400(preprocessed_texts, class_labels=class_labels)
     filtered_comments_keywords, filtered_class_labels = utils.limit_and_filter_comments_400(texts, class_labels=class_labels)
-    liked_by_cust, disliked_by_cust = utils.get_key_words_and_clean_up(filtered_comments_keywords, filtered_class_labels, stanza=nlp, model=model, tokenizer=tokenizer, preprocess=True)
+    liked_by_cust, disliked_by_cust, pos_one_word, neg_one_word = utils.get_key_words_and_clean_up(filtered_comments_keywords, filtered_class_labels, stanza=nlp, model=model, tokenizer=tokenizer, preprocess=True)
 
     # liked_by_cust = utils.decode_emoji(liked_by_cust)
     # disliked_by_cust = utils.decode_emoji(disliked_by_cust)
 
-    # Convert key_words to the desired format
+    # # Convert key_words to the desired format
     positive_key_words = [{"tagname": tag, "value": count} for tag, count in liked_by_cust.items()]
     negative_key_words = [{"tagname": tag, "value": count} for tag, count in disliked_by_cust.items()]
+    graph_positive_key_words =  [{"tagname": tag, "value": count} for tag, count in pos_one_word.items()]
+    graph_negative_key_words =  [{"tagname": tag, "value": count} for tag, count in neg_one_word.items()]
 
     # Question
     netral_data = utils.get_netral_data(class_labels=class_labels, data=texts)
-    print(netral_data)
+    # print(netral_data)
     questions_data = []
     if len(netral_data) > 0:
         is_questions, question_class_labels, question_predictions = utils.predict_question_batch(netral_data, model=question_model, tokenizer=tokenizer, preprocess=True)
@@ -104,7 +106,9 @@ async def predict_sentiments(data: RequestBody):
             },
             "key_words": {
                 "positive": positive_key_words,
-                "negative": negative_key_words
+                "negative": negative_key_words,
+                "graph_positive": graph_positive_key_words,
+                "graph_negative": graph_negative_key_words
             },
             "questions": questions_usernames_map,
             "assistances": assistances_usernames_map,
