@@ -70,6 +70,8 @@ async def predict_sentiments(data: RequestBody):
     # # Convert key_words to the desired format
     positive_key_words = [{"tagname": tag, "value": count} for tag, count in liked_by_cust.items()]
     negative_key_words = [{"tagname": tag, "value": count} for tag, count in disliked_by_cust.items()]
+    graph_positive_key_words =  [{"tagname": tag, "value": count} for tag, count in pos_one_word.items()]
+    graph_negative_key_words =  [{"tagname": tag, "value": count} for tag, count in neg_one_word.items()]
 
     # Question
     netral_data = utils.get_netral_data(class_labels=class_labels, data=texts)
@@ -105,8 +107,8 @@ async def predict_sentiments(data: RequestBody):
             "key_words": {
                 "positive": positive_key_words,
                 "negative": negative_key_words,
-                "graph_positive": pos_one_word,
-                "graph_negative": neg_one_word
+                "graph_positive": graph_positive_key_words,
+                "graph_negative": graph_negative_key_words
             },
             "questions": questions_usernames_map,
             "assistances": assistances_usernames_map,
