@@ -1399,10 +1399,10 @@ def get_key_words_and_clean_up(texts, class_labels, stanza, tokenizer, model, pr
     if len(neg_nouns_adjs) > 15:
         neg_nouns_adjs = dict(islice(neg_nouns_adjs.items(), 15))  
 
-    if len(pos_dict) > 20:
-        pos_dict = dict(islice(pos_dict.items(), 20))  
-    if len(neg_dict) > 20:
-        neg_dict = dict(islice(neg_dict.items(), 20))  
+    if len(pos_dict) > 15:
+        pos_dict = dict(islice(pos_dict.items(), 15))  
+    if len(neg_dict) > 15:
+        neg_dict = dict(islice(neg_dict.items(), 15))  
     return pos_dict, neg_dict, pos_nouns_adjs, neg_nouns_adjs
 
 def filter_with_model(arr, word_dict, tokenizer, model, label):
