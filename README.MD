@@ -45,6 +45,11 @@
    Start the API server:  
    `uvicorn api_ml:app --reload`
 
+8. **Run the Web Prototype (Optional)**:  
+   If you want:  
+   `uvicorn api_ml:app --reload`
+
+
 ---
 
 ## Important Links
