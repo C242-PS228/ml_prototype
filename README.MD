@@ -28,7 +28,7 @@
 
 4. **Set Up a Virtual Environment**:  
    Create and activate a virtual environment:  
-   `python -m venv venv`  
+   `virtualenv venv`  
    `source venv/bin/activate` (On Windows: `venv\Scripts\activate`)
 
 5. **Install Dependencies**:  
