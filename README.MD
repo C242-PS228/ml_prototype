@@ -47,7 +47,7 @@
 
 8. **Run the Web Prototype (Optional)**:  
    If you want:  
-   `uvicorn api_ml:app --reload`
+   `python main.py`
 
 
 ---
