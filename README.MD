@@ -59,6 +59,7 @@
 - **Question Detection Training**: [Open in Colab](https://colab.research.google.com/drive/1VVAZ2F7JWSD5D7doMzM4RlGbnvnXbpvc)  
 - **Asking for Assistance Training**: [Open in Colab](https://colab.research.google.com/drive/1KmePZIYqTXtmCb2HQsHn-wbbotMZNmVT)  
 - **Data Preprocessing**: [Open in Colab](https://colab.research.google.com/drive/1C0g-30zh4MayyeNWv0HwQtWILgKRGZXs)
+- **Gen AI Vertex**: [Open in Colab](https://colab.research.google.com/drive/109IyEBePI-CU8eMx5uMmCpW1mXh0hdih?usp=sharing)
 
 ### Resources
 - **Final Models (.h5)**: [Download from Drive](https://drive.google.com/drive/folders/1DtEKk2ln1VGZ5VwUEM_4LWBwpFi5PjDo?usp=drive_link)  
