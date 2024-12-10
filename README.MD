@@ -7,6 +7,8 @@
   - [Important Links](#important-links)
     - [Notebooks](#notebooks)
     - [Resources](#resources)
+  - [Model Performance](#model-performance)
+  - [Generative Model](#generative-model)
 
 ---
 
@@ -64,3 +66,21 @@
 ### Resources
 - **Final Models (.h5)**: [Download from Drive](https://drive.google.com/drive/folders/1DtEKk2ln1VGZ5VwUEM_4LWBwpFi5PjDo?usp=drive_link)  
 - **Dataset**: [Download from Drive](https://drive.google.com/drive/folders/13yKcgvN8_X9MSDDmGxhxxrdw8j8y_FfA?usp=drive_link)
+
+---
+
+## Model Performance
+
+| **Task**                 | **Accuracy** |
+|--------------------------|--------------|
+| Sentiment Analysis       | 88%          |
+| Question Detection       | 84%          |
+| Ask Assistance Detection | 87%          |
+
+---
+
+## Generative Model
+
+| **Task** | **Base Model**      |
+|----------|---------------------|
+| Resume   | Gemini-1.0-pro-002  |
