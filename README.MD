@@ -7,6 +7,7 @@
   - [Important Links](#important-links)
     - [Notebooks](#notebooks)
     - [Resources](#resources)
+  - [Discriminative Model Architecture](#discriminative-model-architecture)
   - [Model Performance](#model-performance)
   - [Generative Model](#generative-model)
 
@@ -66,6 +67,24 @@
 ### Resources
 - **Final Models (.h5)**: [Download from Drive](https://drive.google.com/drive/folders/1DtEKk2ln1VGZ5VwUEM_4LWBwpFi5PjDo?usp=drive_link)  
 - **Dataset**: [Download from Drive](https://drive.google.com/drive/folders/13yKcgvN8_X9MSDDmGxhxxrdw8j8y_FfA?usp=drive_link)
+
+---
+
+## Discriminative Model Architecture
+
+The discriminative models for **Sentiment Analysis**, **Question Detection**, and **Ask Assistance Detection** share the following architecture:
+
+| **Layer (Type)**          | **Output Shape**   | **Param #**    | **Connected to**                   |
+|---------------------------|--------------------|----------------|-------------------------------------|
+| `input_layer_1` (InputLayer) | (None, 128)       | 0              | -                                   |
+| `embedding_1` (Embedding)   | (None, 128, 768)  | 24,516,864     | `input_layer_1[0][0]`              |
+| `BidirectionalLSTM`         | (None, 128, 256)  | 918,528        | `embedding_1[0][0]`                |
+| `attention_1` (Attention)   | (None, 128, 256)  | 0              | `BidirectionalLSTM[0][...]`        |
+| `global_average_pooling1d`  | (None, 256)       | 0              | `attention_1[0][0]`                |
+| `dense_2` (Dense)           | (None, 128)       | 32,896         | `global_average_pooling1d[0][0]`   |
+| `dropout_1` (Dropout)       | (None, 128)       | 0              | `dense_2[0][0]`                    |
+| `dense_3` (Dense)           | (None, 1)         | 129            | `dropout_1[0][0]`                  |
+
 
 ---
 
