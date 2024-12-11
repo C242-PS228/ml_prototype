@@ -85,6 +85,7 @@ The discriminative models for **Sentiment Analysis**, **Question Detection**, an
 | `dropout_1` (Dropout)       | (None, 128)       | 0              | `dense_2[0][0]`                    |
 | `dense_3` (Dense)           | (None, 1)         | 129            | `dropout_1[0][0]`                  |
 
+**Total Parameters**: 25,468,417 (97.15 MB)
 
 ---
 
