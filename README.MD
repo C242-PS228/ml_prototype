@@ -44,11 +44,26 @@
    Place the downloaded files in the following folder structure:  
    `root -> stanza_models`
 
-7. **Run the API**:  
+7. **Set Up Google Cloud**:  
+   - **Download the Google Cloud SDK**:  
+     Download and install the [Google Cloud SDK](https://cloud.google.com/sdk/docs/install).  
+   - **Log in to Google Cloud**:  
+     Run the following command in your terminal to authenticate:  
+     `gcloud auth login`  
+   - **Set the Project ID**:  
+     Replace `<project-id>` with your actual project ID:  
+     `gcloud config set project <project-id>`  
+   - **Create a Credentials Folder**:  
+     Create a folder named `cloud` in the root directory:  
+     `mkdir cloud`  
+   - **Place the Credentials File**:  
+     Save your Google Cloud credentials JSON file in the `cloud` folder.
+
+8. **Run the API**:  
    Start the API server:  
    `uvicorn api_ml:app --reload`
 
-8. **Run the Web Prototype (Optional)**:  
+9. **Run the Web Prototype (Optional)**:  
    If you want:  
    `python main.py`
 
